@@ -10,13 +10,11 @@ CREATE TABLE books
     price     VARCHAR(250) DEFAULT NULL
 );
 
-CREATE TABLE authors
+create table authors
 (
-    id        INT AUTO_INCREMENT,
-    firstname VARCHAR(250) NOT NULL,
-    lastname  VARCHAR(250) NOT NULL,
-    constraint BOOKS_AUTHORS_ID_FK
-        foreign key (id) references books (author_id)
+    id         INT,
+    first_name VARCHAR(50),
+    last_name  VARCHAR(50)
 );
 
 

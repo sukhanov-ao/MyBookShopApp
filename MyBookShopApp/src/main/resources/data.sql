@@ -1,4 +1,4 @@
-insert into books (author_id, title, priceOld, price) values ('1','exploit real-time e-commerce', '$203.23', '$43.37');
+insert into books (author_id, title, priceOld, price) values ('1','exploit real-time e-commerce', NULL, '$43.37');
 insert into books (author_id, title, priceOld, price) values ('2','utilize real-time interfaces', '$260.31', '$35.96');
 insert into books (author_id, title, priceOld, price) values ('3','extend strategic e-services', '$272.00', '$151.04');
 insert into books (author_id, title, priceOld, price) values ('4','iterate integrated solutions', '$271.58', '$141.40');
@@ -23,29 +23,3 @@ insert into books (author_id, title, priceOld, price) values ('22','implement us
 insert into books (author_id, title, priceOld, price) values ('23','utilize magnetic supply-chains', '$279.70', '$77.86');
 insert into books (author_id, title, priceOld, price) values ('24','e-enable dot-com supply-chains', '$297.83', '$110.15');
 insert into books (author_id, title, priceOld, price) values ('25','facilitate efficient eyeballs', '$232.30', '$131.48');
-
-insert into authors (firstname, lastname) values ('Drucie', 'Goodbourn');
-insert into authors (firstname, lastname) values ('Marcia', 'Aggiss');
-insert into authors (firstname, lastname) values ('Giovanni', 'Bigg');
-insert into authors (firstname, lastname) values ('Duffie', 'Eynon');
-insert into authors (firstname, lastname) values ('Anselma', 'McKennan');
-insert into authors (firstname, lastname) values ('Gert', 'Kira');
-insert into authors (firstname, lastname) values ('Clerc', 'Djakovic');
-insert into authors (firstname, lastname) values ('Stacee', 'Elsy');
-insert into authors (firstname, lastname) values ('Dorotea', 'Bonhill');
-insert into authors (firstname, lastname) values ('Minni', 'Bunney');
-insert into authors (firstname, lastname) values ('Berty', 'Gandley');
-insert into authors (firstname, lastname) values ('Raynard', 'Tesdale');
-insert into authors (firstname, lastname) values ('Joanna', 'Hutfield');
-insert into authors (firstname, lastname) values ('Dannie', 'Glidder');
-insert into authors (firstname, lastname) values ('Timmie', 'Adshede');
-insert into authors (firstname, lastname) values ('Fernando', 'Neads');
-insert into authors (firstname, lastname) values ('Teddy', 'Guilliland');
-insert into authors (firstname, lastname) values ('Paloma', 'Grebert');
-insert into authors (firstname, lastname) values ('Kristos', 'Usher');
-insert into authors (firstname, lastname) values ('Darcey', 'Rohmer');
-insert into authors (firstname, lastname) values ('Cristie', 'Isacsson');
-insert into authors (firstname, lastname) values ('Lindsay', 'Coutthart');
-insert into authors (firstname, lastname) values ('Helyn', 'Schneidar');
-insert into authors (firstname, lastname) values ('Bette-ann', 'Askem');
-insert into authors (firstname, lastname) values ('Dom', 'Robuchon');
