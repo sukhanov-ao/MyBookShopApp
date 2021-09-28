@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=74020866">
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=74020866"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#locales").change(function () {
+                var selectedOption = $("#locales").val();
+                if (selectedOption != '') {
+                    window.location.replace('?lang=' + selectedOption);
+                }
+            })
+        })
+    </script>
 </head>
 <body class="Site">
 <header class="Header" th:replace="~{fragments/common_header_fragment :: head(status='unauthorized')}"></header>
@@ -22,8 +33,8 @@
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='О компании')}"></ul>
-            <h1 class="Middle-title">О компании
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=#{topbar.about})}"></ul>
+            <h1 class="Middle-title" th:text="#{topbar.about}">О компании
             </h1>
             <article class="Article">
                 <div class="sdf">

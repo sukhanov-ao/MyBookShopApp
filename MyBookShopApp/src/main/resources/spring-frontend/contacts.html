@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=10496799">
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=10496799"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#locales").change(function () {
+                var selectedOption = $("#locales").val();
+                if (selectedOption != '') {
+                    window.location.replace('?lang=' + selectedOption);
+                }
+            })
+        })
+    </script>
 </head>
 <body class="Site">
 <header class="Header"
@@ -22,21 +33,21 @@
 <div class="Middle">
     <div class="Middle-top">
         <div class="wrap">
-            <h1 class="Middle-title">Контакты
+            <h1 class="Middle-title" th:text="#{topbar.contacts}">Контакты
             </h1>
         </div>
     </div>
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='Контакты')}"></ul>
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=#{topbar.contacts})}"></ul>
             <div class="Contacts">
                 <div class="row">
                     <div class="row-block">
-                        <h2>Контакты
+                        <h2 th:text="#{topbar.contacts}">Контакты
                         </h2>
                         <div class="Contacts-prop">
-                            <strong class="Contacts-propTitle">Телефон:
+                            <strong class="Contacts-propTitle" th:text="#{contacts.phone}">Телефон:
                             </strong><span class="Contacts-propContent">8 (800) 484-48-48</span>
                         </div>
                         <div class="Contacts-prop">
@@ -44,34 +55,34 @@
                             </strong><span class="Contacts-propContent">test@test.ru</span>
                         </div>
                         <div class="Contacts-prop">
-                            <strong class="Contacts-propTitle">Телеграм-бот:
+                            <strong class="Contacts-propTitle" th:text="#{contacts.telegrambot}">Телеграм-бот:
                             </strong><span class="Contacts-propContent">@testBookShop</span>
                         </div>
                     </div>
                     <div class="row-block">
                         <div class="Contacts-form">
-                            <h2>Напишите нам:
+                            <h2 th:text="#{contacts.contactwithus}">Напишите нам:
                             </h2>
                             <form class="form" action="#" method="post">
                                 <div class="form-group">
                                     <input class="form-input" id="name" name="name" type="text"
-                                           placeholder="Введите Имя" data-validate="require"/>
+                                           th:placeholder='#{contacts.entername}' data-validate="require"/>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-input form-input_mail" id="mail" name="mail" type="text"
-                                           placeholder="Введите e-mail" data-validate="mail require"/>
+                                           th:placeholder='#{contacts.enteremail}' data-validate="mail require"/>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-input" id="topic" name="topic" type="text"
-                                           placeholder="Введите тему" data-validate="require"/>
+                                           th:placeholder='#{contacts.topic}' data-validate="require"/>
                                 </div>
                                 <div class="form-group">
                                     <textarea class="form-textarea Contacts-message" name="message" id="message"
-                                              placeholder="Введите сообщение" data-validate="require"></textarea>
+                                              th:placeholder='#{contacts.entermessage}' data-validate="require"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn_primary form-btn" type="submit" name="sendMessage"
-                                            id="sendMessage">Отправить
+                                            id="sendMessage" th:text="#{contacts.send}">Отправить
                                     </button>
                                 </div>
                             </form>

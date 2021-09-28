@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=77124975">
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=77124975"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#locales").change(function () {
+                var selectedOption = $("#locales").val();
+                if (selectedOption != '') {
+                    window.location.replace('?lang=' + selectedOption);
+                }
+            })
+        })
+    </script>
 </head>
 <body class="Site">
 <header class="Header"
@@ -23,11 +34,11 @@
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='Помощь')}"></ul>
-            <h1 class="Middle-title">Помощь
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=#{topbar.faq})}"></ul>
+            <h1 class="Middle-title" th:text="#{topbar.faq}">Помощь
             </h1>
             <div class="FAQ">
-                <strong class="FAQ-title">Наиболее частые вопросы:
+                <strong class="FAQ-title" th:text="#{faq.faq}">Наиболее частые вопросы:
                 </strong>
                 <div class="HideBlock FAQ-block">
                     <header class="HideBlock-header HideBlock-trigger">
@@ -87,8 +98,8 @@
                     </div>
                 </div>
                 <div class="FAQ-footer">
-                    <p class="FAQ-link">Или&#32;<a href="/contacts.html">свяжитесь с нами</a>
-                    </p>
+                    <p class="FAQ-link" th:text="#{faq.or}"></p><a th:href="@{/contacts}" th:text="#{faq.contactus}">свяжитесь с нами</a>
+
                 </div>
             </div>
         </main>
