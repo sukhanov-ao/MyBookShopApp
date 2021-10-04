@@ -21,22 +21,22 @@ public class AuthorService {
     }
 
     private List<Author> getAuthorsData() {
-        return authorRepository.findAll(Sort.by("id"));
+        return authorRepository.findAllByOrderByLastNameAsc();
     }
 
     public List<AuthorSection> getAuthorsStartWithLetter() {
         List<Author> authors = getAuthorsData();
-        List<AuthorSection> authorSections = new ArrayList<>();
-
-        authors.stream()
+        return authors.stream()
                 .collect(Collectors.groupingBy((Author author) -> author.getLastName().substring(0, 1).toUpperCase()))
                 .entrySet().stream().map(authorSectionMap -> {
-            AuthorSection authorSection = new AuthorSection();
-            authorSection.setLetter(authorSectionMap.getKey());
-            authorSection.setAuthors(authorSectionMap.getValue());
-            authorSections.add(authorSection);
-            return authorSection;
-        }).collect(Collectors.toList());
-        return authorSections;
+                    AuthorSection authorSection = new AuthorSection();
+                    authorSection.setLetter(authorSectionMap.getKey());
+                    authorSection.setAuthors(authorSectionMap.getValue());
+                    return authorSection;
+                }).collect(Collectors.toList());
+    }
+
+    public Author getAuthorById(Integer id) {
+        return authorRepository.getById(id);
     }
 }
