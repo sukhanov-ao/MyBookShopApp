@@ -29,7 +29,7 @@ public class TagsPageController {
         return "tags/index";
     }
 
-    @GetMapping("/books/tag/{tagId:\\d+}")
+    @GetMapping("/books/tag/page/{tagId:\\d+}")
     @ResponseBody
     public BooksPageDTO getNextPage(@RequestParam("offset") Integer offset,
                                     @RequestParam("limit") Integer limit,
