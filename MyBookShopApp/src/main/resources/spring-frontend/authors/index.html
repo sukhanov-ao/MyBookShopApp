@@ -51,7 +51,7 @@
                             <div class="Authors-letter">
                                 <div class="Authors-item"
                                      th:each="author : ${authorSection.authors}">
-                                    <a href="/authors/slug" th:href="@{'/authors/slug/' + author.id}"
+                                    <a href="/authors/slug" th:href="@{'/authors/slug/' + ${author.id}}"
                                        th:text="${author.lastName} + ' ' + ${author.firstName}">
                                     </a>
                                 </div>
