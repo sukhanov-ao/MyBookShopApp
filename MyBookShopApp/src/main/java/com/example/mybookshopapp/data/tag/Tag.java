@@ -20,12 +20,11 @@ public class Tag {
 
     @ManyToMany
     @JsonIgnore
-    @JoinTable(
-            name = "book2tag",
-            joinColumns = @JoinColumn(name = "tag_id"), foreignKey = @ForeignKey(name = "fk_tag_book"),
-            inverseJoinColumns = @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "fk_book_tag"))
-    )
+    @JoinTable(name = "book2tag", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> bookList;
+
+    private Integer amount;
+
 
 
     public Integer getId() {

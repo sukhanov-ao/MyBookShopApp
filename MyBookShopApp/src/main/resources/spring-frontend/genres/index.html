@@ -40,14 +40,14 @@
                     <div class="Tags Tags_embed" th:each="genreType : ${genreSectionData}">
                         <div class="Tags-title">
                             <div class="Tag">
-                                <a href="/genres/slug.html" th:href="@{'/genres/slug/' + ${genreType.genreType}}" th:text="${genreType.genreType}">Лёгкое чтение
-                                    <span class="undefined-amount" th:text="'(' + ${genreType.genres.size()} + ')'">(15638)</span>
+                                <a href="/genres/slug.html" th:href="@{'/genres/slug/' + ${genreType.genreType}}" th:text="${genreType.genreType}  + ' ' + '(' + ${genreType.genres.size()} + ')'">Лёгкое чтение
+                                    <span class="undefined-amount">(15638)</span>
                                 </a>
                             </div>
                         </div>
                         <div class="Tag" th:each="genre : ${genreType.genres}">
-                            <a href="/genres/slug.html" th:href="@{'/genres/slug/' + ${genre.id}}" th:text="${genre}">Фантастика
-                                <span class="undefined-amount" th:text="${'(' + genre.getBookListByGenre().size() + ')'}">(44333)</span>
+                            <a href="/genres/slug.html" th:href="@{'/genres/slug/' + ${genre.id}}" th:text="${genre} + ' ' + '(' + ${genre.getBookListByGenre().size()} + ')'">Фантастика
+                                <span class="undefined-amount">(44333)</span>
                             </a>
                         </div>
                 </div>

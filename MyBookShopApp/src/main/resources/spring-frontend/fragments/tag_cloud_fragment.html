@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="Tags" id="tags" th:fragment="cloud">
-    <div class="Tag Tag_md" th:each="tag : ${tags}">
-        <a th:href="@{'/tags/' + ${tag.id}}" th:text="${tag.name}" href="/tags/index.html">современная литература</a>
+    <div class="Tag Tag_md" th:each="tag : ${tags}"
+         th:classappend="
+                     ${(tag.getBookList().size() > 30 ? 'Tag_lg' : '') +
+                     (tag.getBookList().size() <= 30 && tag.getBookList().size() > 20  ? 'Tag_md' : '') +
+                     (tag.getBookList().size() <= 20 && tag.getBookList().size() > 10 ? 'Tag_sm' : '') +
+                     (tag.getBookList().size() <= 10 && tag.getBookList().size() >= 1 ? 'Tag_xs' : '')}">
+        <a th:href="@{'/tags/' + ${tag.id}}"
+           th:text="${tag.name}">
+        </a>
     </div>
 </div>
 </html>

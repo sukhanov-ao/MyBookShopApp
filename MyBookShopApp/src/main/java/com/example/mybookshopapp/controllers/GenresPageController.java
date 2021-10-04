@@ -44,15 +44,15 @@ public class GenresPageController {
         return "genres/slug";
     }
 
-    @GetMapping("/genres/slug/{name}")
-    public String getAllGenresPage(@PathVariable String name,
-                                   Model model) {
-        GenreType genreType = new GenreType();
-        genreType.setName(name);
-        model.addAttribute("type", genreType);
-        model.addAttribute("genreBooks", bookService.getPageBookByGenreType(genreType, 0, 20).getContent());
-        return "genres/slug";
-    }
+//    @GetMapping("/genres/slug/{name}")
+//    public String getAllGenresPage(@PathVariable String name,
+//                                   Model model) {
+//        GenreType genreType = new GenreType();
+//        genreType.setName(name);
+//        model.addAttribute("type", genreType);
+//        model.addAttribute("genreBooks", bookService.getPageBookByGenreType(genreType, 0, 20).getContent());
+//        return "genres/slug";
+//    }
 
     @GetMapping("/books/genre/{genreId:\\d+}")
     @ResponseBody
@@ -62,7 +62,7 @@ public class GenresPageController {
         return new BooksPageDTO(bookService.getPageBookByGenreId(genreId, offset, limit).getContent());
     }
 
-    @GetMapping("/books/genreType/{genreTypeValue}")
+    @GetMapping("/books/genreType/{genreType}")
     @ResponseBody
     public BooksPageDTO getNextSearchPageGenreType(@PathVariable GenreType genreType,
                                                    @RequestParam("offset") Integer offset,
