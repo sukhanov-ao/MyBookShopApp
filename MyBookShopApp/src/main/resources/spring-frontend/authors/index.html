@@ -47,7 +47,7 @@
                             <h2 class="Authors-title" th:text="${authorSection.letter}"></h2>
                             <div class="Authors-letter">
                                 <div class="Authors-item" th:each="author : ${authorSection.authors}">
-                                    <a href="/authors/slug.html" th:text="${author.lastname} + ' ' + ${author.firstname}"></a>
+                                    <a href="/authors/slug.html" th:text="${author.lastName} + ' ' + ${author.firstName}"></a>
                                 </div>
                             </div>
                         </div>

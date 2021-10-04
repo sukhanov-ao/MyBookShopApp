@@ -1,34 +1,27 @@
 package com.example.mybookshopapp.services;
 
-import com.example.mybookshopapp.data.Author;
-import com.example.mybookshopapp.data.AuthorSection;
+import com.example.mybookshopapp.data.book.Author;
+import com.example.mybookshopapp.repositories.AuthorRepository;
+import com.example.mybookshopapp.data.book.AuthorSection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
 
-    private final JdbcTemplate jdbcTemplate;
+    AuthorRepository authorRepository;
 
     @Autowired
-    public AuthorService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public AuthorService(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
     }
 
     private List<Author> getAuthorsData() {
-        List<Author> authors = jdbcTemplate.query("SELECT * FROM authors", (ResultSet rs, int rowNum) -> {
-            Author author = new Author();
-            author.setId(rs.getInt("id"));
-            author.setFirstname(rs.getString("first_name"));
-            author.setLastname(rs.getString("last_name"));
-            return author;
-        });
-        return authors.stream().sorted(Comparator.comparing(Author::getLastname)).collect(Collectors.toList());
+        return authorRepository.findAll(Sort.by("id"));
     }
 
     public List<AuthorSection> getAuthorsStartWithLetter() {
@@ -36,7 +29,7 @@ public class AuthorService {
         List<AuthorSection> authorSections = new ArrayList<>();
 
         authors.stream()
-                .collect(Collectors.groupingBy((Author author) -> author.getLastname().substring(0, 1).toUpperCase()))
+                .collect(Collectors.groupingBy((Author author) -> author.getLastName().substring(0, 1).toUpperCase()))
                 .entrySet().stream().map(authorSectionMap -> {
             AuthorSection authorSection = new AuthorSection();
             authorSection.setLetter(authorSectionMap.getKey());
@@ -45,18 +38,5 @@ public class AuthorService {
             return authorSection;
         }).collect(Collectors.toList());
         return authorSections;
-    }
-
-    public Map<String, List<Author>> getAuthorsMap() {
-        List<Author> authors = jdbcTemplate.query("SELECT * FROM authors", (ResultSet rs, int rowNum) -> {
-            Author author = new Author();
-            author.setId(rs.getInt("id"));
-            author.setFirstname(rs.getString("first_name"));
-            author.setLastname(rs.getString("last_name"));
-            return author;
-        });
-
-        return authors.stream()
-                .collect(Collectors.groupingBy((Author author) -> author.getLastname().substring(0, 1).toUpperCase()));
     }
 }
