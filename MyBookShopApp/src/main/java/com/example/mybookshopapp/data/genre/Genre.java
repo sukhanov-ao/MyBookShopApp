@@ -13,7 +13,10 @@ public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
+
+    @Column(columnDefinition = "INT")
+    private Integer parentId;
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String slug;
@@ -21,17 +24,8 @@ public class Genre {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "genre_type_id", referencedColumnName = "id", columnDefinition = "INT")
-    @JsonIgnore
-    private GenreType genreType;
-
     @OneToMany(mappedBy = "genre")
-    private List<Book> bookListByGenre = new ArrayList<>();
-
-    public GenreType getGenreType() {
-        return genreType;
-    }
+    private  List<Book> bookListByGenre = new ArrayList<>();
 
     public List<Book> getBookListByGenre() {
         return bookListByGenre;
@@ -41,16 +35,20 @@ public class Genre {
         this.bookListByGenre = bookListByGenre;
     }
 
-    public void setGenreType(GenreType genreType) {
-        this.genreType = genreType;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     public String getSlug() {

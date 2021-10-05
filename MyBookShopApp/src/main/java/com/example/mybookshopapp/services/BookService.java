@@ -2,7 +2,6 @@ package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.data.book.Book;
 import com.example.mybookshopapp.data.genre.Genre;
-import com.example.mybookshopapp.data.genre.GenreType;
 import com.example.mybookshopapp.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -88,13 +87,8 @@ public class BookService {
         return bookRepository.findAllByGenre(genre, nextPage);
     }
 
-    public Page<Book> getPageBookByGenreType(GenreType genreType, Integer offset, Integer limit) {
-        Pageable nextPage = PageRequest.of(offset, limit);
-        return bookRepository.findAllByGenre_GenreType(genreType, nextPage);
-    }
-
     public Page<Book> getPageBookByGenreId(Integer genreId, Integer offset, Integer limit) {
         Pageable nextPage = PageRequest.of(offset, limit);
-        return bookRepository.findAllByGenreId(genreId, nextPage);
+        return bookRepository.getPageBookByGenreId(genreId, nextPage);
     }
 }

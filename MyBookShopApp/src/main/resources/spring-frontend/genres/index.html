@@ -28,28 +28,36 @@
     </script>
 </head>
 <body class="Site">
-<header class="Header" th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE', status='unauthorized')}">
+<header class="Header"
+        th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE', status='unauthorized')}">
 </header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
-            <h1 class="Middle-title" th:text="#{topbar.genres}">Жанры
+            <h1 class="Middle-title">Жанры
             </h1>
             <div class="Section">
                 <div class="Tags Tags_genres">
-                    <div class="Tags Tags_embed" th:each="genreType : ${genreSectionData}">
+                    <div class="Tags Tags_embed" th:each="genre : ${genres}">
                         <div class="Tags-title">
-                            <div class="Tag">
-                                <a href="/genres/slug.html" th:href="@{'/genres/slug/' + ${genreType.genreType}}" th:text="${genreType.genreType}  + ' ' + '(' + ${genreType.genres.size()} + ')'">Лёгкое чтение
-                                    <span class="undefined-amount">(15638)</span>
-                                </a>
+                            <div class="Tag" th:if="${genre.parentId == null}">
+                                <a th:href="@{'/genres/' + ${genre.id}}" href="/genres/slug.html" th:text="${genre.name}  + ' ' + '(' + ${genre.getBookListByGenre().size()} + ')'">Лёгкое чтение<span
+                                        class="undefined-amount">(15638)</span></a>
                             </div>
                         </div>
-                        <div class="Tag" th:each="genre : ${genreType.genres}">
-                            <a href="/genres/slug.html" th:href="@{'/genres/slug/' + ${genre.id}}" th:text="${genre} + ' ' + '(' + ${genre.getBookListByGenre().size()} + ')'">Фантастика
+                        <div class="Tag" th:if="${genre.parentId == 1 || genre.parentId == 17}">
+                            <a th:href="@{'/genres/' + ${genre.id}}" href="/genres/slug.html" th:text="${genre.name}  + ' ' + '(' + ${genre.getBookListByGenre().size()} + ')'">Фантастика
                                 <span class="undefined-amount">(44333)</span>
                             </a>
                         </div>
+                        <div class="Tags">
+                            <div class="Tag" th:if="${genre.parentId == 4 || genre.parentId == 19}">
+                                <a th:href="@{'/genres/' + ${genre.id}}" href="/genres/slug.html" th:text="${genre.name}  + ' ' + '(' + ${genre.getBookListByGenre().size()} + ')'">Триллер
+                                    <span class="undefined-amount">(134)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
