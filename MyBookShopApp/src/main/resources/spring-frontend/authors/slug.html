@@ -15,6 +15,17 @@
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=93601584">
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=93601584"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#locales").change(function () {
+                var selectedOption = $("#locales").val();
+                if (selectedOption != '') {
+                    window.location.replace('?lang=' + selectedOption);
+                }
+            })
+        })
+    </script>
 </head>
 <body class="Site">
 <header class="Header"
@@ -23,13 +34,15 @@
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='Борис Васильевич Бедный')}"></ul>
-            <div th:replace="~{fragments/author_article_fragment :: article(author='Борис Васильевич Бедный')}"></div>
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=#{topbar.genres})}"></ul>
+            <div th:replace="~{fragments/author_article_fragment :: article(author=${author})}"></div>
             <div class="Section"
                  th:replace="~{fragments/book_slider_fragment :: bookSlider(title='Книги автора')}"></div>
-            <footer class="Section-footer"><a class="Author-books" th:href="@{/books/author}" href="/books/author.html">Все
-                книги автора<span
-                        class="Author-amount">(55)</span></a>
+            <footer class="Section-footer">
+                <a class="Author-books" th:href="@{'/books/author/' + ${author.id}}" href="/books/author.html">
+                    Все книги автора
+                    <span class="Author-amount" th:text="(${size})">(55)</span>
+                </a>
             </footer>
         </main>
     </div>

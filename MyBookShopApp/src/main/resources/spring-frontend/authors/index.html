@@ -38,21 +38,26 @@
             <div class="Section">
                 <div class="Authors">
                     <div class="Authors-links">
-                        <a class="Authors-link" th:each="authorSection : ${authorSectionData}" th:text="${authorSection.letter}"
-                           th:href="${authorSection.letter}"></a>
+                        <a class="Authors-link"
+                           th:each="authorSection : ${authorSectionData}"
+                           th:text="${authorSection.letter}"
+                           th:href="${authorSection.letter}">
+                        </a>
                     </div>
                     <div class="Authors-block" th:each="authorSection : ${authorSectionData}">
                         <div class="Authors-container">
                             <div class="blank"></div>
                             <h2 class="Authors-title" th:text="${authorSection.letter}"></h2>
                             <div class="Authors-letter">
-                                <div class="Authors-item" th:each="author : ${authorSection.authors}">
-                                    <a href="/authors/slug.html" th:text="${author.lastName} + ' ' + ${author.firstName}"></a>
+                                <div class="Authors-item"
+                                     th:each="author : ${authorSection.authors}">
+                                    <a href="/authors/slug" th:href="@{'/authors/slug/' + ${author.id}}"
+                                       th:text="${author.lastName} + ' ' + ${author.firstName}">
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </main>

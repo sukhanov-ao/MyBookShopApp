@@ -41,7 +41,7 @@
                     </h1>
                 </div>
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(category='popular')}"></div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(category='popular', books=${mostPopularBooks}, refreshQuery='')}"></div>
             </div>
         </main>
     </div>

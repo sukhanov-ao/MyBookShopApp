@@ -18,19 +18,19 @@
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status='unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='Детективы')}"></ul>
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${genre})}"></ul>
             <header class="Middle-header">
-                <h1 class="Middle-title">Детективы
+                <h1 class="Middle-title" th:text="${genre}">Детективы
                 </h1>
             </header>
             <div class="Section">
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(category='genre')}"></div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(category='genre', books=${genreBooks}, refreshId = ${genre.id}, refreshQuery='')}"></div>
             </div>
         </main>
     </div>

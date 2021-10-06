@@ -1,8 +1,9 @@
 package com.example.mybookshopapp.data.book;
 
-import com.example.mybookshopapp.data.book.Author;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AuthorSection {
 
@@ -31,5 +32,19 @@ public class AuthorSection {
                 "letter='" + letter + '\'' +
                 ", authors=" + authors +
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorSection that = (AuthorSection) o;
+        return Objects.equals(letter, that.letter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(letter);
     }
 }

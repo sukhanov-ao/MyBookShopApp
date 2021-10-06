@@ -59,7 +59,7 @@
                     </form>
                 </div>
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(category='recent')}"></div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(category='recent', books=${mostRecentBooks}, refreshQuery='')}"></div>
             </div>
         </main>
     </div>

@@ -33,7 +33,8 @@
                     </div>
                     <div class="Header-search">
                         <div class="search">
-                            <form class="form form_search" action="#" method="post" data-searchlimit="20">
+                            <form class="form form_search" action="#" method="post" data-searchlimit="20"
+                            th:object="${searchWordDTO}">
                                 <input class="search-input" id="query" name="query" type="text"
                                        th:placeholder="#{topbar.placeholder}" value=""/>
                                 <button class="search-button" type="submit" name="search" id="search" th:text="#{search.button}">Поиск
@@ -55,29 +56,52 @@
         <div class="wrap">
             <nav class="menuModal" id="navigate">
                 <ul class="menu menu_main">
-                    <li class="menu-item" th:class="${main}"><a class="menu-link" th:href="@{/}"
-                                                                href="/index.html"
+                    <li class="menu-item" th:class="${main}"><a class="menu-link" th:href="@{/}" href="/index.html"
                                                                 th:text="#{topbar.main}">Главная</a>
                     </li>
-                    <li class="menu-item" th:class="${genres}"><a class="menu-link" th:href="@{/genres}"
-                                                                  href="/genres/index.html"
+                    <li class="menu-item" th:class="${genres}"><a class="menu-link" th:href="@{/genres}" href="/genres/index.html"
                                                                   th:text="#{topbar.genres}">Жанры</a>
                     </li>
-                    <li class="menu-item" th:class="${recent}"><a class="menu-link" th:href="@{/books/recent}"
-                                                                  href="/books/recent.html"
+                    <li class="menu-item" th:class="${recent}"><a class="menu-link" th:href="@{/books/recent}" href="/books/recent.html"
                                                                   th:text="#{topbar.recent}">Новинки</a>
                     </li>
-                    <li class="menu-item" th:class="${popular}"><a class="menu-link" th:href="@{/books/popular}"
-                                                                   href="/books/popular.html"
+                    <li class="menu-item" th:class="${popular}"><a class="menu-link" th:href="@{/books/popular}" href="/books/popular.html"
                                                                    th:text="#{topbar.popular}">Популярное</a>
                     </li>
-                    <li class="menu-item" th:class="${authors}"><a class="menu-link" th:href="@{/authors}"
-                                                                   href="/authors/index.html"
+                    <li class="menu-item" th:class="${authors}"><a class="menu-link" th:href="@{/authors}" href="/authors/index.html"
                                                                    th:text="#{topbar.authors}">Авторы</a>
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
+<!--    <div class="Header-menu">-->
+<!--        <div class="wrap">-->
+<!--            <nav class="menuModal" id="navigate">-->
+<!--                <ul class="menu menu_main">-->
+<!--                    <li class="menu-item"><a class="menu-link" th:text="#{topbar.main}" th:href="@{/}">Главная</a>-->
+<!--                    </li>-->
+<!--                    <li class="menu-item"><a class="menu-link" th:href="@{/genres}"-->
+<!--                                             th:text="#{topbar.genres}">Жанры</a>-->
+<!--                    </li>-->
+<!--                    <li class="menu-item"><a class="menu-link" href="/books/recent.html" th:href="@{/recent}"-->
+<!--                                             th:text="#{topbar.news}">Новинки</a>-->
+<!--                    </li>-->
+<!--                    <li class="menu-item"><a class="menu-link" href="/books/popular.html" th:href="@{/popular}"-->
+<!--                                             th:text="#{topbar.popular}">Популярное</a>-->
+<!--                    </li>-->
+<!--                    <li sec:authorize="isAuthenticated()" class="menu-item"><a class="menu-link" href="/books/recently_views.html" th:href="@{/recently_views}"-->
+<!--                                                                               th:text="#{topbar.recently_views}">Популярное</a>-->
+<!--                    </li>-->
+<!--                    <li class="menu-item"><a class="menu-link" href="/authors/index.html" th:text="#{topbar.authors}"-->
+<!--                                             th:href="@{/authors}">Авторы</a>-->
+<!--                    </li>-->
+<!--                    <li sec:authorize="hasRole('ADMIN')" class="menu-item"><a class="menu-link" th:href="@{/admin/users}"-->
+<!--                                                                              th:text="Пользователи"></a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+<!--        </div>-->
+<!--    </div>-->
 </header>
 </html>
