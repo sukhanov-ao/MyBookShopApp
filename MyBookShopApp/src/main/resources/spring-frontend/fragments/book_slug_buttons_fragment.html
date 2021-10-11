@@ -4,6 +4,7 @@
     <div class="ProductCard-cart">
         <div class="ProductCard-cartElement">
             <button class="btn btn_primary btn_outline" data-sendstatus="KEPT" data-bookid="[1111]"
+                    th:attr="data-bookid = ${'postponed/' + slugBook.slug}"
                     data-btntype="check" data-btnradio="buyblock" data-check="false"
                     data-alttext="Отложена"><span class="btn-icon"><img
                     src="/assets/img/icons/heart.svg" alt="heart.svg"/></span><span
@@ -12,7 +13,7 @@
         </div>
         <div class="ProductCard-cartElement">
             <button class="btn btn_primary btn_outline" data-sendstatus="CART" data-bookid="[1111]"
-                    data-btntype="check" data-btnradio="buyblock" data-check="false"
+                    th:attr="data-bookid = ${slugBook.slug}" data-btntype="check" data-btnradio="buyblock" data-check="false"
                     data-alttext="В корзине"><span class="btn-icon"><img
                     src="/assets/img/icons/shopping-basket.svg"
                     alt="shopping-basket.svg"/></span><span class="btn-content">Купить</span>
@@ -27,6 +28,7 @@
         </div>
         <div class="ProductCard-cartElement">
             <button class="btn btn_primary btn_outline" data-sendstatus="ARCHIVED"
+                    th:attr="data-bookid = ${slugBook.slug}"
                     data-bookid="[1111]" data-btntype="check" data-btnradio="buyblock"
                     data-check="false" data-alttext="Вернуть из архива"><span class="btn-icon"><img
                     src="/assets/img/icons/archive.svg" alt="archive.svg"/></span><span
@@ -34,5 +36,14 @@
             </button>
         </div>
     </div>
+
+    <div id="myPopup">
+        <p>Ссылки для скачивания</p>
+        <div th:each="bookFile : ${slugBook.getBookFileList()}">
+            <a href="#" th:href="@{'/books/download/' + ${bookFile.hash}}" th:text="${bookFile.getBookFileExtensionString()}"></a>
+        </div>
+        <span id="myPopup__close" class="close">❌</span>
+    </div>
+    <div id="myOverlay"></div>
 </div>
 </html>

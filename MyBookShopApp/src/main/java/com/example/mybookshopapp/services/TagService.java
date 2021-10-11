@@ -24,4 +24,8 @@ public class TagService {
     public Tag getTag(Integer tagId) {
         return tagRepository.getOne(tagId);
     }
+
+    public List<Tag> getAllTags() {
+        return tagRepository.findAll();
+    }
 }
