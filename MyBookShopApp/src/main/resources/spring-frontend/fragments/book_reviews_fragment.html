@@ -10,7 +10,7 @@
             <div class="Comment-column">
                 <header class="Comment-header">
                     <div>
-                        <strong class="Comment-title" th:text="${review.userName}">Александр Кузнецов
+                        <strong class="Comment-title" th:inline="text">[[${review.userName}]]
                             <span class="Comment-rating"><span
                                 class="Rating Rating_comment"><span class="Rating-stars"><span
                                 class="Rating-star" th:classappend="${review.rating >= 1} ? 'Rating-star_view' : ''">
@@ -58,7 +58,7 @@
                         <span class="Comment-date"  th:text="${#temporals.format(review.time, 'dd-MM-yyyy HH:mm')}">17.04.2020 16:40</span>
                     </div>
                 </header>
-                <div class="Comment-content" th:text="${review.text}">
+                <div class="Comment-content" th:inline="text">[[${review.text}]]
                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit doli. Aenean commodo ligula eget dolor.
                         Aenean massa. Cumtipsu sociis natoque penatibus et magnis dis parturient montesti, nascetur
                         ridiculus mus. Donec quam felis, ultricies nec, pellentesque eutu, pretiumem. Nulla consequat
