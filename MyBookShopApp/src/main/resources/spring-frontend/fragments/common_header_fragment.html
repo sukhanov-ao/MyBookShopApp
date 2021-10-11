@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#locales").change(function () {
-            var selectedOption = $("#locales").val();
-            if (selectedOption != '') {
-                window.location.replace('?lang=' + selectedOption);
-            }
-        })
-    })
-</script>
+<body>
 <header class="Header" th:fragment="head">
     <div class="Header-rowMain">
         <div class="wrap">
@@ -34,10 +25,11 @@
                     <div class="Header-search">
                         <div class="search">
                             <form class="form form_search" action="#" method="post" data-searchlimit="20"
-                            th:object="${searchWordDTO}">
+                                  th:object="${searchWordDTO}">
                                 <input class="search-input" id="query" name="query" type="text"
                                        th:placeholder="#{topbar.placeholder}" value=""/>
-                                <button class="search-button" type="submit" name="search" id="search" th:text="#{search.button}">Поиск
+                                <button class="search-button" type="submit" name="search" id="search"
+                                        th:text="#{search.button}">Поиск
                                 </button>
                             </form>
                         </div>
@@ -61,16 +53,20 @@
                     <li class="menu-item" th:class="${main}"><a class="menu-link" th:href="@{/}" href="/index.html"
                                                                 th:text="#{topbar.main}">Главная</a>
                     </li>
-                    <li class="menu-item" th:class="${genres}"><a class="menu-link" th:href="@{/genres}" href="/genres/index.html"
+                    <li class="menu-item" th:class="${genres}"><a class="menu-link" th:href="@{/genres}"
+                                                                  href="/genres/index.html"
                                                                   th:text="#{topbar.genres}">Жанры</a>
                     </li>
-                    <li class="menu-item" th:class="${recent}"><a class="menu-link" th:href="@{/books/recent}" href="/books/recent.html"
+                    <li class="menu-item" th:class="${recent}"><a class="menu-link" th:href="@{/books/recent}"
+                                                                  href="/books/recent.html"
                                                                   th:text="#{topbar.recent}">Новинки</a>
                     </li>
-                    <li class="menu-item" th:class="${popular}"><a class="menu-link" th:href="@{/books/popular}" href="/books/popular.html"
+                    <li class="menu-item" th:class="${popular}"><a class="menu-link" th:href="@{/books/popular}"
+                                                                   href="/books/popular.html"
                                                                    th:text="#{topbar.popular}">Популярное</a>
                     </li>
-                    <li class="menu-item" th:class="${authors}"><a class="menu-link" th:href="@{/authors}" href="/authors/index.html"
+                    <li class="menu-item" th:class="${authors}"><a class="menu-link" th:href="@{/authors}"
+                                                                   href="/authors/index.html"
                                                                    th:text="#{topbar.authors}">Авторы</a>
                     </li>
                 </ul>
@@ -78,4 +74,5 @@
         </div>
     </div>
 </header>
+</body>
 </html>
