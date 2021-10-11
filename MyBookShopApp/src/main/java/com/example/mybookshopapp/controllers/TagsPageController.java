@@ -22,6 +22,11 @@ public class TagsPageController {
         this.bookService = bookService;
     }
 
+    @GetMapping("/tags/")
+    public String getAllTags(Model model) {
+        model.addAttribute("tags", tagService.getAllTags());
+        return "tags/index";
+    }
     @GetMapping("/tags/{tagId:\\d+}")
     public String getTag(@PathVariable Integer tagId, Model model) {
         model.addAttribute("tagBooks", bookService.getBooksByTag(tagId, 0, 20));

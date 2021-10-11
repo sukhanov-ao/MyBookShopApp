@@ -42,6 +42,8 @@
                             </form>
                         </div>
                     </div>
+                    <span th:if="${searchError}" th:text="${searchError.getLocalizedMessage()}"
+                          style="color: red"></span>
                 </div>
                 <div class="row-block Header-cart" th:replace="~{fragments/cart_block_fragment :: ${status}}"></div>
                 <div class="row-block Header-trigger"><a class="menuTrigger" href="#navigate">
@@ -75,33 +77,5 @@
             </nav>
         </div>
     </div>
-<!--    <div class="Header-menu">-->
-<!--        <div class="wrap">-->
-<!--            <nav class="menuModal" id="navigate">-->
-<!--                <ul class="menu menu_main">-->
-<!--                    <li class="menu-item"><a class="menu-link" th:text="#{topbar.main}" th:href="@{/}">Главная</a>-->
-<!--                    </li>-->
-<!--                    <li class="menu-item"><a class="menu-link" th:href="@{/genres}"-->
-<!--                                             th:text="#{topbar.genres}">Жанры</a>-->
-<!--                    </li>-->
-<!--                    <li class="menu-item"><a class="menu-link" href="/books/recent.html" th:href="@{/recent}"-->
-<!--                                             th:text="#{topbar.news}">Новинки</a>-->
-<!--                    </li>-->
-<!--                    <li class="menu-item"><a class="menu-link" href="/books/popular.html" th:href="@{/popular}"-->
-<!--                                             th:text="#{topbar.popular}">Популярное</a>-->
-<!--                    </li>-->
-<!--                    <li sec:authorize="isAuthenticated()" class="menu-item"><a class="menu-link" href="/books/recently_views.html" th:href="@{/recently_views}"-->
-<!--                                                                               th:text="#{topbar.recently_views}">Популярное</a>-->
-<!--                    </li>-->
-<!--                    <li class="menu-item"><a class="menu-link" href="/authors/index.html" th:text="#{topbar.authors}"-->
-<!--                                             th:href="@{/authors}">Авторы</a>-->
-<!--                    </li>-->
-<!--                    <li sec:authorize="hasRole('ADMIN')" class="menu-item"><a class="menu-link" th:href="@{/admin/users}"-->
-<!--                                                                              th:text="Пользователи"></a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </nav>-->
-<!--        </div>-->
-<!--    </div>-->
 </header>
 </html>

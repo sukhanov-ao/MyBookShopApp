@@ -1,7 +1,11 @@
 package com.example.mybookshopapp.data.book;
 
+import com.example.mybookshopapp.data.book.file.BookFile;
+import com.example.mybookshopapp.data.book.file.BookFileType;
+import com.example.mybookshopapp.data.book.review.BookReview;
 import com.example.mybookshopapp.data.genre.Genre;
 import com.example.mybookshopapp.data.tag.Tag;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
@@ -47,6 +51,9 @@ public class Book {
     @ApiModelProperty("image url")
     private String image;
 
+    @OneToMany(mappedBy = "book")
+    private List<BookFile> bookFileList = new ArrayList<>();
+
     @Column(columnDefinition = "TEXT")
     @ApiModelProperty("book description text")
     private String description;
@@ -56,8 +63,8 @@ public class Book {
     @ApiModelProperty("book price without discount")
     private Integer priceOld;
 
-    @Column(name = "discount_price")
-    @JsonProperty("discount_price")
+    @Column(name = "discount")
+    @JsonProperty("discount")
     @ApiModelProperty("discount value for book")
     private Double price;
 
@@ -79,6 +86,29 @@ public class Book {
     @ManyToMany(mappedBy = "bookList", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Tag> tagList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    private List<BookReview> bookReviewList = new ArrayList<>();
+
+    @JsonProperty
+    public Integer discountPrice() {
+        Integer discountPrice = priceOld - (int)Math.round((price * priceOld));
+        return discountPrice;
+    }
+
+    @JsonGetter("authors")
+    public String authorFullName() {
+        return author.toString();
+    }
+
+    public List<BookReview> getBookReviewList() {
+        return bookReviewList;
+    }
+
+    public void setBookReviewList(List<BookReview> bookReviewList) {
+        this.bookReviewList = bookReviewList;
+    }
 
     public Genre getGenre() {
         return genre;
@@ -198,6 +228,14 @@ public class Book {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public List<BookFile> getBookFileList() {
+        return bookFileList;
+    }
+
+    public void setBookFileList(List<BookFile> bookFileList) {
+        this.bookFileList = bookFileList;
     }
 
     @Override
