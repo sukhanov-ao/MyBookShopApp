@@ -40,7 +40,7 @@
                     </div>
                     <div class="ProductCard-desc" th:replace="~{fragments/book_description_fragment :: bookDesc}"></div>
                 </div>
-                <div class="comment-section">
+                <div class="comment-section" style="border: 1px solid #6db33f; border-radius: 15px; padding: 40px">
                     <form method="post" th:action="${'/books/bookReview/' + slugBook.slug}">
                         <input class="userName" id="userName" name="userName" type="text"
                                placeholder="Введите имя пользователя" value="" required>
