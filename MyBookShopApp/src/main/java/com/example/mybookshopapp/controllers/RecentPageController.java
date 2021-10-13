@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Controller
 public class RecentPageController {
@@ -55,7 +56,7 @@ public class RecentPageController {
              dateFrom = simpleDateFormat.parse(from);
              dateTo= simpleDateFormat.parse(to);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getSimpleName()).warning(e.getLocalizedMessage());
         }
         return new BooksPageDTO(bookService.getMostRecentBooks(dateFrom, dateTo, offset, limit).getContent());
     }
