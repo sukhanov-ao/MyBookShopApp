@@ -12,8 +12,9 @@
                     <div>
                         <strong class="Comment-title" th:inline="text">[[${review.userName}]]
                             <span class="Comment-rating"><span
-                                class="Rating Rating_comment"><span class="Rating-stars"><span
-                                class="Rating-star" th:classappend="${review.rating >= 1} ? 'Rating-star_view' : ''">
+                                    class="Rating Rating_comment"><span class="Rating-stars"><span
+                                    class="Rating-star"
+                                    th:classappend="${review.rating >= 1} ? 'Rating-star_view' : ''">
                               <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                                 <g>
                                   <g>
@@ -21,7 +22,8 @@
                                           d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
                                   </g>
                                 </g>
-                              </svg></span><span class="Rating-star" th:classappend="${review.rating >= 2} ? 'Rating-star_view' : ''">
+                              </svg></span><span class="Rating-star"
+                                                 th:classappend="${review.rating >= 2} ? 'Rating-star_view' : ''">
                               <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                                 <g>
                                   <g>
@@ -29,7 +31,8 @@
                                           d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
                                   </g>
                                 </g>
-                              </svg></span><span class="Rating-star" th:classappend="${review.rating >= 3} ? 'Rating-star_view' : ''">
+                              </svg></span><span class="Rating-star"
+                                                 th:classappend="${review.rating >= 3} ? 'Rating-star_view' : ''">
                               <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                                 <g>
                                   <g>
@@ -37,7 +40,8 @@
                                           d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
                                   </g>
                                 </g>
-                              </svg></span><span class="Rating-star" th:classappend="${review.rating >= 4} ? 'Rating-star_view' : ''">
+                              </svg></span><span class="Rating-star"
+                                                 th:classappend="${review.rating >= 4} ? 'Rating-star_view' : ''">
                               <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                                 <g>
                                   <g>
@@ -45,7 +49,8 @@
                                           d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
                                   </g>
                                 </g>
-                              </svg></span><span class="Rating-star" th:classappend="${review.rating >= 5} ? 'Rating-star_view' : ''">
+                              </svg></span><span class="Rating-star"
+                                                 th:classappend="${review.rating >= 5} ? 'Rating-star_view' : ''">
                               <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                                 <g>
                                   <g>
@@ -55,21 +60,10 @@
                                 </g>
                               </svg></span></span></span></span>
                         </strong>
-                        <span class="Comment-date"  th:text="${#temporals.format(review.time, 'dd-MM-yyyy HH:mm')}">17.04.2020 16:40</span>
+                        <span class="Comment-date" th:text="${#temporals.format(review.time, 'dd-MM-yyyy HH:mm')}">17.04.2020 16:40</span>
                     </div>
                 </header>
-                <div class="Comment-content" th:inline="text">[[${review.text}]]
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit doli. Aenean commodo ligula eget dolor.
-                        Aenean massa. Cumtipsu sociis natoque penatibus et magnis dis parturient montesti, nascetur
-                        ridiculus mus. Donec quam felis, ultricies nec, pellentesque eutu, pretiumem. Nulla consequat
-                        massa
-                        quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
-                        justotuio,
-                        rhoncus ut loret, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis
-                        pretium.
-                        Integer tincidunt. Cras dapibus. Vivamus element semper nisi. Aenean vulputate eleifend tellus.
-                        Aenean leo ligula, porttitor eu, consequat vitae.
-                    </p>
+                <div class="Comment-content" th:inline="text"><p>[[${review.text}]]</p>
                     <div class="Comment-footer">
                         <div class="Comment-appeal">
                             <button class="btn btn_white btn_like" data-btntype="check" data-check="false"

@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
-public class BookStoreUserDetails implements UserDetails {
+public class BookStoreUserDetails implements UserDetails, OAuth2User {
 
     private final BookStoreUser bookStoreUser;
 
@@ -18,6 +20,11 @@ public class BookStoreUserDetails implements UserDetails {
 
     public BookStoreUser getBookStoreUser() {
         return bookStoreUser;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
     }
 
     @Override
@@ -53,5 +60,10 @@ public class BookStoreUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }

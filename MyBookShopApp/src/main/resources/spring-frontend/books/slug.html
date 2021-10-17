@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
@@ -41,7 +41,7 @@
                     <div class="ProductCard-desc" th:replace="~{fragments/book_description_fragment :: bookDesc}"></div>
                 </div>
                 <div class="comment-section" style="border: 1px solid #6db33f; border-radius: 15px; padding: 40px">
-                    <form method="post" th:action="${'/books/bookReview/' + slugBook.slug}">
+                    <form sec:authorize="isAuthenticated()" method="post" th:action="${'/books/bookReview/' + slugBook.slug}">
                         <input class="userName" id="userName" name="userName" type="text"
                                placeholder="Введите имя пользователя" value="" required>
                         <br>
@@ -113,6 +113,7 @@
             </span>
                         <input class="comment-item" type="submit" value="оставить отзыв">
                     </form>
+                    <H2 sec:authorize="!isAuthenticated()" style="color: red">Чтобы оставить отзыв авторизуйтесь</H2>
                 </div>
                 <div class="Product-comments">
                     <div class="Product-comments-header">

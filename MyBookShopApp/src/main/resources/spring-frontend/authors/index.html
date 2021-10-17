@@ -41,13 +41,13 @@
                         <a class="Authors-link"
                            th:each="authorSection : ${authorSectionData}"
                            th:text="${authorSection.letter}"
-                           th:href="${authorSection.letter}">
+                           th:href="'#' + ${#strings.toLowerCase(authorSection.letter)}">
                         </a>
                     </div>
                     <div class="Authors-block" th:each="authorSection : ${authorSectionData}">
                         <div class="Authors-container">
                             <div class="blank"></div>
-                            <h2 class="Authors-title" th:text="${authorSection.letter}"></h2>
+                            <h2 class="Authors-title" th:id="${#strings.toLowerCase(authorSection.letter)}" th:text="${authorSection.letter}"></h2>
                             <div class="Authors-letter">
                                 <div class="Authors-item"
                                      th:each="author : ${authorSection.authors}">

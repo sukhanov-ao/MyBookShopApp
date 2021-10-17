@@ -20,7 +20,9 @@ public class BookStoreUserRegister {
 
 
     @Autowired
-    public BookStoreUserRegister(BookStoreUserRepository bookStoreUserRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, BookStoreUserDetailService bookStoreUserDetailService, JWTUtil jwtUtil) {
+    public BookStoreUserRegister(BookStoreUserRepository bookStoreUserRepository, PasswordEncoder passwordEncoder,
+                                 AuthenticationManager authenticationManager, BookStoreUserDetailService bookStoreUserDetailService,
+                                 JWTUtil jwtUtil) {
         this.bookStoreUserRepository = bookStoreUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
