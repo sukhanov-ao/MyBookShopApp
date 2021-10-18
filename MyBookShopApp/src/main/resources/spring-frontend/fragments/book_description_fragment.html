@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div class="ProductCard-desc" th:fragment="bookDesc">
     <div class="ProductCard-header">
         <h1 class="ProductCard-title" th:text="${slugBook.title}">Мара и морок
@@ -291,7 +291,8 @@
         </div>
         <div class="ProductCard-assessment">
             <span class="ProductCard-titleProp">Оцените книгу:</span>
-            <span class="Rating Rating_input" th:attr="data-bookid = ${slugBook.slug}" data-bookid="2121">
+            <span sec:authorize="!isAuthenticated()" style="color: red">Авторизуйтесь, чтобы проголосовать</span>
+            <span class="Rating Rating_input" sec:authorize="isAuthenticated()" th:attr="data-bookid = ${slugBook.slug}" data-bookid="2121">
                 <span class="Rating-stars">
                     <span class="Rating-star">
                         <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">

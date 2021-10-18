@@ -30,7 +30,7 @@ public class BookStoreUserRegister {
         this.jwtUtil = jwtUtil;
     }
 
-    public void registerNewUser(RegistrationForm registrationForm) {
+    public BookStoreUser registerNewUser(RegistrationForm registrationForm) {
         if (bookStoreUserRepository.findBookStoreUserByEmail(registrationForm.getEmail()) == null) {
             BookStoreUser user = new BookStoreUser();
             user.setName(registrationForm.getName());
@@ -38,8 +38,9 @@ public class BookStoreUserRegister {
             user.setPhone(registrationForm.getPhone());
             user.setPassword(passwordEncoder.encode(registrationForm.getPassword()));
             bookStoreUserRepository.save(user);
-
+            return user;
         }
+        return null;
     }
 
     public ContactConfirmationResponse jwtLogin(ContactConfirmationPayload payload) {
@@ -59,7 +60,7 @@ public class BookStoreUserRegister {
         return response;
     }
 
-    public Object getCurrentUser() {
+    public BookStoreUser getCurrentUser() {
         BookStoreUserDetails userDetails = (BookStoreUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userDetails.getBookStoreUser();
     }

@@ -19,14 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
     private final BookStoreUserDetailService bookStoreUserDetailService;
     private final JWTUtil jwtUtil;
     private final JwtBlackListService jwtBlackListService;
+    private static final String EXPIRED_TOKEN = "JWT token is expired or invalid";
 
 
     @Autowired
@@ -53,31 +51,15 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                         tokenCookie = cookie;
                         token = cookie.getValue();
                         username = jwtUtil.extractUsername(token);
-                        break;
                     }
                 }
-                if (nonNull(token) && !token.isEmpty() && nonNull(this.jwtBlackListService.getByToken(token))) {
-                    throw new JwtAuthenticationException("JWT token is expired or invalid");
-                } else if (nonNull(username) && isNull(SecurityContextHolder.getContext().getAuthentication())) {
+                if (token != null && !token.isEmpty() && jwtBlackListService.getByToken(token)) {
+                    throw new JwtAuthenticationException(EXPIRED_TOKEN);
+                } else if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     try {
-                        BookStoreUserDetails userDetails = (BookStoreUserDetails) bookStoreUserDetailService.loadUserByUsername(username);
-                        if (jwtUtil.validateToken(token, userDetails)) {
-                            UsernamePasswordAuthenticationToken authenticationToken =
-                                    new UsernamePasswordAuthenticationToken(
-                                            userDetails, null, userDetails.getAuthorities());
-
-                            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                        } else {
-                            throw new JwtAuthenticationException("JWT token is expired or invalid");
-                        }
+                        validateToken(httpServletRequest, token, username);
                     } catch (UsernameNotFoundException e) {
-                        tokenCookie.setMaxAge(0);
-                        tokenCookie.setValue(null);
-                        httpServletResponse.addCookie(tokenCookie);
-                        SecurityContextHolder.clearContext();
-                        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-                        securityContextLogoutHandler.logout(httpServletRequest, httpServletResponse, SecurityContextHolder.getContext().getAuthentication());
+                        invalidateTokenCookie(httpServletRequest, httpServletResponse, tokenCookie);
                     }
                 }
 
@@ -85,8 +67,35 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         } catch (JwtAuthenticationException e) {
             SecurityContextHolder.clearContext();
             filterChain.doFilter(httpServletRequest, httpServletResponse);
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
+            throw new JwtAuthenticationException(EXPIRED_TOKEN);
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
+
+    private void validateToken(HttpServletRequest httpServletRequest, String token, String username) {
+        BookStoreUserDetails userDetails = (BookStoreUserDetails) bookStoreUserDetailService.loadUserByUsername(username);
+        if (jwtUtil.validateToken(token, userDetails)) {
+            authenticateToken(httpServletRequest, userDetails);
+        } else {
+            throw new JwtAuthenticationException(EXPIRED_TOKEN);
+        }
+    }
+
+    private void authenticateToken(HttpServletRequest httpServletRequest, BookStoreUserDetails userDetails) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
+    private void invalidateTokenCookie(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Cookie tokenCookie) {
+        tokenCookie.setMaxAge(0);
+        tokenCookie.setValue(null);
+        httpServletResponse.addCookie(tokenCookie);
+        SecurityContextHolder.clearContext();
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(httpServletRequest, httpServletResponse, SecurityContextHolder.getContext().getAuthentication());
     }
 }

@@ -3,18 +3,13 @@ package com.example.mybookshopapp.security.oauth2;
 import com.example.mybookshopapp.security.BookStoreUser;
 import com.example.mybookshopapp.security.BookStoreUserDetailService;
 import com.example.mybookshopapp.security.BookStoreUserDetails;
-import com.example.mybookshopapp.security.BookStoreUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequestEntityConverter;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -31,7 +26,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -59,45 +53,31 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        if (!StringUtils.hasText(userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri())) {
-            OAuth2Error oauth2Error = new OAuth2Error(MISSING_USER_INFO_URI_ERROR_CODE, "Missing required UserInfo Uri in UserInfoEndpoint for Client Registration: " + userRequest.getClientRegistration().getRegistrationId(), null);
-            throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
-        }
+        checkUserInfo(userRequest);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-        if (!StringUtils.hasText(userNameAttributeName)) {
-            OAuth2Error oauth2Error = new OAuth2Error(
-                    MISSING_USER_NAME_ATTRIBUTE_ERROR_CODE,
-                    "Missing required \"user name\" attribute name in UserInfoEndpoint for Client Registration: " + registrationId, null);
-            throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
-        }
 
-        ResponseEntity<Map<String, Object>> response;
+        checkAttributeNamePresence(registrationId, userNameAttributeName);
+
+        ResponseEntity<Map<String, Object>> response = null;
         try {
-            // OAuth2UserRequestEntityConverter cannot return null values.
-            //noinspection ConstantConditions
             response = this.restOperations.exchange(requestEntityConverter.convert(userRequest), PARAMETERIZED_RESPONSE_TYPE);
         } catch (OAuth2AuthorizationException ex) {
-            OAuth2Error oauth2Error = ex.getError();
-            StringBuilder errorDetails = new StringBuilder();
-            errorDetails.append("Error details: [");
-            errorDetails.append("UserInfo Uri: ").append(
-                    userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri());
-            errorDetails.append(", Error Code: ").append(oauth2Error.getErrorCode());
-            if (oauth2Error.getDescription() != null) {
-                errorDetails.append(", Error Description: ").append(oauth2Error.getDescription());
-            }
-            errorDetails.append("]");
-            oauth2Error = new OAuth2Error(INVALID_USER_INFO_RESPONSE_ERROR_CODE,
-                    "An error occurred while attempting to retrieve the UserInfo Resource: " + errorDetails.toString(), null);
-            throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString(), ex);
+            getErrorDetails(userRequest, ex);
         } catch (RestClientException ex) {
             OAuth2Error oauth2Error = new OAuth2Error(INVALID_USER_INFO_RESPONSE_ERROR_CODE,
                     "An error occurred while attempting to retrieve the UserInfo Resource: " + ex.getMessage(), null);
             throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString(), ex);
         }
 
+        Map<String, Object> userAttributes = getUserAttributes(userRequest, response);
+
+        BookStoreUser user = findOrCreate(userAttributes);
+        return new BookStoreUserDetails(user);
+    }
+
+    private Map<String, Object> getUserAttributes(OAuth2UserRequest userRequest, ResponseEntity<Map<String, Object>> response) {
         Map<String, Object> userAttributes = response.getBody();
 
         Set<GrantedAuthority> authorities = new LinkedHashSet<>();
@@ -106,12 +86,39 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         for (String authority : userRequest.getAccessToken().getScopes()) {
             authorities.add(new SimpleGrantedAuthority("SCOPE_" + authority));
         }
+        return userAttributes;
+    }
 
-        // ищем пользователя в нашей БД, либо создаем нового
-        // если пользователь не найден и система не подразумевает автоматической регистрации,
-        // необходимо сгенерировать тут исключение
-        BookStoreUser user = findOrCreate(userAttributes);
-        return new BookStoreUserDetails(user);
+    private void checkAttributeNamePresence(String registrationId, String userNameAttributeName) {
+        if (!StringUtils.hasText(userNameAttributeName)) {
+            OAuth2Error oauth2Error = new OAuth2Error(
+                    MISSING_USER_NAME_ATTRIBUTE_ERROR_CODE,
+                    "Missing required \"user name\" attribute name in UserInfoEndpoint for Client Registration: " + registrationId, null);
+            throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
+        }
+    }
+
+    private void checkUserInfo(OAuth2UserRequest userRequest) {
+        if (!StringUtils.hasText(userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri())) {
+            OAuth2Error oauth2Error = new OAuth2Error(MISSING_USER_INFO_URI_ERROR_CODE, "Missing required UserInfo Uri in UserInfoEndpoint for Client Registration: " + userRequest.getClientRegistration().getRegistrationId(), null);
+            throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
+        }
+    }
+
+    private void getErrorDetails(OAuth2UserRequest userRequest, OAuth2AuthorizationException ex) {
+        OAuth2Error oauth2Error = ex.getError();
+        StringBuilder errorDetails = new StringBuilder();
+        errorDetails.append("Error details: [");
+        errorDetails.append("UserInfo Uri: ").append(
+                userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri());
+        errorDetails.append(", Error Code: ").append(oauth2Error.getErrorCode());
+        if (oauth2Error.getDescription() != null) {
+            errorDetails.append(", Error Description: ").append(oauth2Error.getDescription());
+        }
+        errorDetails.append("]");
+        oauth2Error = new OAuth2Error(INVALID_USER_INFO_RESPONSE_ERROR_CODE,
+                "An error occurred while attempting to retrieve the UserInfo Resource: " + errorDetails.toString(), null);
+        throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString(), ex);
     }
 
     private BookStoreUser findOrCreate(Map<String, Object> userAttributes) {

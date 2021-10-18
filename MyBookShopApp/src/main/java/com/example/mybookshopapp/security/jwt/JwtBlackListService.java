@@ -11,11 +11,11 @@ public class JwtBlackListService {
         this.jwtBlackListRepository = jwtBlackListRepository;
     }
 
-    public JWTBlackList getByToken(String token) {
-        return this.jwtBlackListRepository.findJwtBlacklistByToken(token);
+    public Boolean getByToken(String token) {
+        return jwtBlackListRepository.findJwtBlacklistByToken(token) != null;
     }
 
-    public JWTBlackList saveToken(JWTBlackList jwtBlacklist) {
-        return this.jwtBlackListRepository.save(jwtBlacklist);
+    public void saveToken(JWTBlackList jwtBlacklist) {
+        jwtBlackListRepository.save(jwtBlacklist);
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="reviewBlock">
     <div class="Comments">
         <div class="Comment" th:each="review : ${slugBook.bookReviewList}">
@@ -67,14 +67,14 @@
                     <div class="Comment-footer">
                         <div class="Comment-appeal">
                             <button class="btn btn_white btn_like" data-btntype="check" data-check="false"
-                                    data-btnradio="two2" data-likeid="1111"><span class="btn-icon"><img
+                                    data-btnradio="two2" th:attr="data-bookslug = ${slugBook.slug}, data-likeid = ${review.id}" data-likeid="1111"><span class="btn-icon"><img
                                     src="/assets/img/icons/comment/like.svg" alt="like.svg"/></span><span
-                                    class="btn-content">200</span>
+                                    class="btn-content" th:text="${review.getLikeCount()}">200</span>
                             </button>
                             <button class="btn btn_white btn_dislike" data-btntype="check" data-check="false"
-                                    data-btnradio="two2" data-likeid="1111"><span class="btn-icon"><img
+                                    data-btnradio="two2" th:attr="data-bookslug = ${slugBook.slug}, data-likeid = ${review.id}" data-likeid="1111"><span class="btn-icon"><img
                                     src="/assets/img/icons/comment/dislike.svg" alt="dislike.svg"/></span><span
-                                    class="btn-content">100</span>
+                                    class="btn-content" th:text="${review.getDisLikeCount()}">100</span>
                             </button>
                         </div>
                     </div>

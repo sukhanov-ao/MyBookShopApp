@@ -5,15 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 public class CustomLogoutHandler implements LogoutSuccessHandler {
     private JwtBlackListService jwtBlackListService;
@@ -32,7 +28,7 @@ public class CustomLogoutHandler implements LogoutSuccessHandler {
                 token = cookie.getValue();
             }
         }
-        if (nonNull(token) && isNull(jwtBlackListService.getByToken(token))) {
+        if (token != null && jwtBlackListService.getByToken(token)) {
             JWTBlackList jwtBlacklist = new JWTBlackList();
             jwtBlacklist.setToken(token);
             jwtBlackListService.saveToken(jwtBlacklist);
