@@ -2,6 +2,8 @@ package com.example.mybookshopapp.controllers;
 
 import com.example.mybookshopapp.data.book.Book;
 import com.example.mybookshopapp.repositories.BookRepository;
+import com.example.mybookshopapp.security.BookStoreUser;
+import com.example.mybookshopapp.security.BookStoreUserRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,11 +16,12 @@ import java.util.List;
 @ControllerAdvice
 public class ModelAttributeController {
 
-    BookRepository bookRepository;
+    private final BookRepository bookRepository;
+    private final BookStoreUserRegister userRegister;
 
-    @Autowired
-    public ModelAttributeController(BookRepository bookRepository) {
+    public ModelAttributeController(BookRepository bookRepository, BookStoreUserRegister userRegister) {
         this.bookRepository = bookRepository;
+        this.userRegister = userRegister;
     }
 
     @ModelAttribute(name = "bookInPostponedAmount")

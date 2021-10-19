@@ -1,11 +1,14 @@
 package com.example.mybookshopapp.controllers;
 
+import com.example.mybookshopapp.data.BookReviewLikeValue;
 import com.example.mybookshopapp.data.ResourceStorage;
 import com.example.mybookshopapp.data.book.Book;
 import com.example.mybookshopapp.data.book.rating.BookRating;
 import com.example.mybookshopapp.data.book.review.BookReview;
 import com.example.mybookshopapp.repositories.BookRepository;
 import com.example.mybookshopapp.repositories.RatingRepository;
+import com.example.mybookshopapp.security.BookStoreUserDetails;
+import com.example.mybookshopapp.services.BookReviewLikeService;
 import com.example.mybookshopapp.services.BookReviewService;
 import com.example.mybookshopapp.services.RatingService;
 import org.jboss.logging.Logger;
@@ -14,6 +17,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +36,16 @@ public class BooksController {
     private final RatingRepository ratingRepository;
     private final RatingService ratingService;
     private final BookReviewService bookReviewService;
-
+    private final BookReviewLikeService reviewLikeService;
+    private static final String REDIRECT_TO_BOOKS = "redirect:/books/";
     @Autowired
-    public BooksController(BookRepository bookRepository, ResourceStorage storage, RatingRepository ratingRepository, RatingService ratingService, BookReviewService bookReviewService) {
+    public BooksController(BookRepository bookRepository, ResourceStorage storage, RatingRepository ratingRepository, RatingService ratingService, BookReviewService bookReviewService, BookReviewLikeService reviewLikeService) {
         this.bookRepository = bookRepository;
         this.storage = storage;
         this.ratingRepository = ratingRepository;
         this.ratingService = ratingService;
         this.bookReviewService = bookReviewService;
+        this.reviewLikeService = reviewLikeService;
     }
 
     @PostMapping("/{slug}/img/save")
@@ -50,7 +56,7 @@ public class BooksController {
         Book bookToUpdate = bookRepository.findBookBySlug(slug);
         bookToUpdate.setImage(savePath);
         bookRepository.save(bookToUpdate);
-        return ("redirect:/books/" + slug);
+        return (REDIRECT_TO_BOOKS + slug);
     }
 
     @GetMapping("/download/{hash}")
@@ -86,13 +92,13 @@ public class BooksController {
 
     @PostMapping("/changeBookStatus/vote/{slug}")
     public String handleChangeBookStatus(@PathVariable("slug") String slug,
-                                         @RequestParam("value") Integer value) {
+                                         @RequestBody BookReviewLikeValue reviewLikeValue) {
         Book book = bookRepository.findBookBySlug(slug);
         BookRating bookRating = ratingRepository.getRatingByBookId(book.getId());
-        bookRating.setStarByValue(value);
+        bookRating.setStarByValue(reviewLikeValue.getValue());
         ratingService.save(bookRating);
         Logger.getLogger(this.getClass().getSimpleName()).info("Выполняем обновление рейтинга" + bookRating);
-        return "redirect:/books/" + slug;
+        return REDIRECT_TO_BOOKS + slug;
     }
 
     @PostMapping("/bookReview/{slug}")
@@ -110,7 +116,17 @@ public class BooksController {
         review.setRating(rating);
         bookReviewService.saveReview(review);
 
+        return REDIRECT_TO_BOOKS + slug;
+    }
 
-        return "redirect:/books/" + slug;
+    @PostMapping("/rateBookReview/{bookSlug}")
+    public String handleBookReviewRateChanging(@RequestBody BookReviewLikeValue reviewLikeValue,
+                                               @PathVariable("bookSlug") String bookSlug,
+                                               @AuthenticationPrincipal BookStoreUserDetails user) {
+        if (user != null) {
+            reviewLikeService.saveReviewLike(user.getBookStoreUser(), reviewLikeValue.getReviewId(), reviewLikeValue.getValue());
+        }
+
+        return REDIRECT_TO_BOOKS + bookSlug;
     }
 }

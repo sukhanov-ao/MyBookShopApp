@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
@@ -19,6 +19,7 @@
     <script defer src="/assets/js/scripts.min.js?v=87821122"></script>
 </head>
 <body class="Site">
+<!--<header sec:authorize='isAuthenticated()' class="Header" th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='authorized')}"></header>-->
 <header class="Header" th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
@@ -28,20 +29,24 @@
             <div class="Product">
                 <div class="ProductCard">
                     <div class="ProductCard-look">
-                        <form id="imgForm" method="post" enctype="multipart/form-data" action="#"
-                              th:action="${'/books/' + slugBook.slug + '/img/save'}">
                             <div class="ProductCard-photo" id="uploadButton">
                                 <img th:src="${slugBook.image}"
                                      src="/assets/img/content/main/card.jpg"
                                      alt="card.jpg"/>
                             </div>
-                            <input type="file" name="file" id="dialog" style="display: none" accept="image/*">
-                        </form>
+                        <div>
+                            <form type="button" sec:authorize='isAuthenticated()' id="imgForm" method="post" enctype="multipart/form-data"
+                                    action="#"
+                                    th:action="${'/books/' + slugBook.slug + '/img/save'}" value="Загрузить файл">
+                                <input type="file" name="file" id="dialog" style="display: none" accept="image/*">
+                            </form>
+                        </div>
                     </div>
                     <div class="ProductCard-desc" th:replace="~{fragments/book_description_fragment :: bookDesc}"></div>
                 </div>
-                <div class="comment-section">
-                    <form method="post" th:action="${'/books/bookReview/' + slugBook.slug}">
+                <div sec:authorize="isAuthenticated()" class="comment-section" style="border: 1px solid #6db33f; border-radius: 15px; padding: 40px">
+                    <form  method="post"
+                          th:action="${'/books/bookReview/' + slugBook.slug}">
                         <input class="userName" id="userName" name="userName" type="text"
                                placeholder="Введите имя пользователя" value="" required>
                         <br>
@@ -111,9 +116,10 @@
                     </span>
                       <input name="rating" type="radio" value="5"/></span>
             </span>
-                        <input class="comment-item" type="submit" value="оставить отзыв">
+                        <input class="comment-item" type="submit" value="Оставить отзыв">
                     </form>
                 </div>
+                <H2 sec:authorize="!isAuthenticated()" style="color: red">Чтобы оставить отзыв авторизуйтесь</H2>
                 <div class="Product-comments">
                     <div class="Product-comments-header">
                         <h3 class="Product-comments-title">Отзывы

@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookReviewRepository extends JpaRepository<BookReview, Integer> {
 
-
+    BookReview findBookReviewById(Integer id);
 }
