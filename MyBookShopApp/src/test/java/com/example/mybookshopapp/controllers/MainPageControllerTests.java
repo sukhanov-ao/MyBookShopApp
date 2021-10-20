@@ -54,6 +54,14 @@ class MainPageControllerTests {
     }
 
     @Test
+    void correctLoginByPhoneTest() throws Exception {
+        mockMvc.perform(formLogin("/signin").user("+7 (999) 999-99-91").password("123123"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
     @WithUserDetails("test1@gmail.com")
     void testAuthenticatedAccessToProfilePage() throws Exception {
         mockMvc.perform(get("/profile"))
