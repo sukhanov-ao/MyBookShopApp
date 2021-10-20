@@ -54,7 +54,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/my", "/profile", "/books/changeBookStatus/**", "/books/*/img/save", "/books/bookReview/**", "/books/postponed", "/books/cart").authenticated()
+                .antMatchers("/my", "/profile", "/books/changeBookStatus/vote/**", "/books/*/img/save", "/books/bookReview/**").authenticated()
                 .antMatchers("/**").permitAll()
                 .and().formLogin()
                 .loginPage("/signin").failureUrl("/signin")//страница логина

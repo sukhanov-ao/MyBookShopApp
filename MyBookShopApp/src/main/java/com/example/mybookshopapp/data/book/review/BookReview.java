@@ -36,7 +36,7 @@ public class BookReview {
     @Column
     private Integer rating;
 
-    @OneToMany(mappedBy = "bookReview", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bookReview")
     private List<BookReviewLike> bookReviewLikes = new ArrayList<>();
 
     public long getLikeCount() {
