@@ -18,8 +18,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,20 +41,19 @@ class CartPageControllerTests {
     }
 
     @Test
-    void handleRemoveBookFromCartRequest() {
-    }
-
-    @Test
     void handleChangeBookStatus() throws Exception {
         mockMvc.perform(post("/books/changeBookStatus/book-iod-942"))
                 .andDo(print())
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(cookie().value("cartContents", "book-iod-942"));
     }
 
     @Test
     void handleChangeBookStatusDeleteFromCart() throws Exception {
-        mockMvc.perform(post("/books/changeBookStatus/cart/remove/book-iod-942"))
+        mockMvc.perform(post("/books/changeBookStatus/cart/remove/book-iod-942")
+                        .cookie(new Cookie("cartContents", "book-iod-942")))
                 .andDo(print())
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(cookie().value("cartContents", ""));
     }
 }
