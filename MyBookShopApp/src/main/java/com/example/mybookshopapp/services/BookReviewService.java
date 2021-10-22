@@ -1,5 +1,6 @@
 package com.example.mybookshopapp.services;
 
+import com.example.mybookshopapp.annotations.MethodExecutionTimeLoggable;
 import com.example.mybookshopapp.data.book.review.BookReview;
 import com.example.mybookshopapp.repositories.BookReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class BookReviewService {
         this.bookReviewRepository = bookReviewRepository;
     }
 
+    @MethodExecutionTimeLoggable
     public void saveReview(BookReview review) {
         bookReviewRepository.save(review);
     }

@@ -1,5 +1,6 @@
 package com.example.mybookshopapp.services;
 
+import com.example.mybookshopapp.annotations.MethodExecutionTimeLoggable;
 import com.example.mybookshopapp.data.book.review.BookReview;
 import com.example.mybookshopapp.data.book.review.BookReviewLike;
 import com.example.mybookshopapp.repositories.BookReviewLikeRepository;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Service
 public class BookReviewLikeService {
@@ -23,10 +23,12 @@ public class BookReviewLikeService {
         this.reviewRepository = reviewRepository;
     }
 
+    @MethodExecutionTimeLoggable
     private BookReviewLike getBookReviewLikeByUserAndReview(BookStoreUser user, BookReview bookReview) {
         return bookReviewLikeRepo.findBookReviewLikeByUserAndBookReview(user, bookReview);
     }
 
+    @MethodExecutionTimeLoggable
     public Boolean saveReviewLike(BookStoreUser user, Integer bookReviewId, Integer value) {
         BookReview bookReview = reviewRepository.findBookReviewById(bookReviewId);
         BookReviewLike reviewLike = getBookReviewLikeByUserAndReview(user, bookReview);

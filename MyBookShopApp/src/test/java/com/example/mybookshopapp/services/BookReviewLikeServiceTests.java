@@ -59,7 +59,7 @@ class BookReviewLikeServiceTests {
         List<BookReviewLike> bookReviewLikeListBefore = bookReviewLikeRepository.findBookReviewLikeByBookReview(bookReviewBefore);
         bookReviewBefore.setBookReviewLikes(bookReviewLikeListBefore);
         bookReviewLikeService.saveReviewLike(bookStoreUser, bookReviewBefore.getId(), value);
-        Thread.sleep(500);
+
         List<BookReviewLike> bookReviewLikeListAfter = bookReviewLikeRepository.findBookReviewLikeByBookReview(bookReviewBefore);
         BookReview bookReviewAfter = bookReviewRepository.findBookReviewById(bookReviewBefore.getId());
         bookReviewAfter.setBookReviewLikes(bookReviewLikeListAfter);

@@ -1,5 +1,6 @@
 package com.example.mybookshopapp.controllers;
 
+import com.example.mybookshopapp.annotations.BookStatusChangeable;
 import com.example.mybookshopapp.data.book.Book;
 import com.example.mybookshopapp.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class CartPageController {
         return "cart";
     }
 
+    @BookStatusChangeable
     @PostMapping("/changeBookStatus/cart/remove/{slug}")
     public String handleRemoveBookFromCartRequest(@PathVariable("slug") String slug,
                                                   @CookieValue(name = "cartContents", required = false) String cartContents,
@@ -67,6 +69,7 @@ public class CartPageController {
         return "redirect:/books/cart";
     }
 
+    @BookStatusChangeable
     @PostMapping("/changeBookStatus/{slug}")
     public String handleChangeBookStatus(@PathVariable("slug") String slug,
                                          @CookieValue(name = "cartContents", required = false) String cartContents,
