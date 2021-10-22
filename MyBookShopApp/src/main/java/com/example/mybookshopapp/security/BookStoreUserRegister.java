@@ -44,7 +44,9 @@ public class BookStoreUserRegister {
     }
 
     public ContactConfirmationResponse jwtLogin(ContactConfirmationPayload payload) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(payload.getContact(), payload.getCode()));
+        if (payload != null && !payload.getContact().startsWith("+")) {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(payload.getContact(), payload.getCode()));
+        }
         BookStoreUserDetails userDetails = (BookStoreUserDetails) bookStoreUserDetailService.loadUserByUsername(payload.getContact());
         String jwtToken = jwtUtil.generateToken(userDetails);
         ContactConfirmationResponse response = new ContactConfirmationResponse();

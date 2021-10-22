@@ -4,34 +4,34 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class MainPage {
-
-    private String url = "http://localhost:8085/";
-    private ChromeDriver driver;
+public class MainPage extends AbstractPage {
 
     public MainPage(ChromeDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public MainPage callPage() {
-        driver.get(url);
-        return this;
+    @Override
+    protected AbstractPage callPage() {
+        return super.callPage();
     }
 
-    public MainPage pause() throws InterruptedException {
-        Thread.sleep(2000);
-        return this;
+    @Override
+    protected AbstractPage pause() throws InterruptedException {
+        return super.pause();
     }
 
-    public MainPage setUpSearchToken(String token) {
-        WebElement element = driver.findElement(By.id("query"));
-        element.sendKeys(token);
-        return this;
+    @Override
+    public AbstractPage submitById(String id) {
+        return super.submitById(id);
     }
 
-    public MainPage submit() {
-        WebElement element = driver.findElement(By.id("search"));
-        element.submit();
-        return this;
+    @Override
+    public AbstractPage clickByXpath(String xpath) {
+        return super.clickByXpath(xpath);
+    }
+
+    @Override
+    public AbstractPage setUpSearchToken(String token) {
+        return super.setUpSearchToken(token);
     }
 }
