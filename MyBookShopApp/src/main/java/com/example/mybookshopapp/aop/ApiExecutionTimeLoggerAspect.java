@@ -8,7 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Aspect
 @Component
@@ -25,37 +26,41 @@ public class ApiExecutionTimeLoggerAspect {
     }
 
     @Around(value = "logApiPointcut()")
-    public Object aroundApiExecutionTimeAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object aroundExecutionApiAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+        LocalDateTime beforeMethodStarted = LocalDateTime.now();
+        logger.info("Выполняется api-запрос {} в сервисе {}", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName());
         Object returnValue = null;
-        logger.info("Выполняется метод {} в сервисе {}", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName());
-        long durationMills = new Date().getTime();
         try {
             returnValue = proceedingJoinPoint.proceed();
         } catch (Throwable t) {
-            logger.error("При вызове метода {} из класса {} произошла ошибка {}", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName(), t.getMessage());
+            logger.error("При вызове api-запроса {} из класса {} произошла ошибка {}", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName(), t.getMessage());
         }
-        durationMills = new Date().getTime() - durationMills;
+        LocalDateTime afterMethodExecution = LocalDateTime.now();
 
-        if (durationMills > 10_000L) {
-            logger.warn("При вызове метода {} из класса {} запрос в БД превысил 10 секунд!", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName());
+        Duration duration = Duration.between(beforeMethodStarted, afterMethodExecution);
+
+        if (duration.getSeconds() > 10) {
+            logger.warn("При вызове api-запроса {} из класса {} запрос в БД превысил 10 секунд!", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName());
         }
 
         return returnValue;
     }
 
     @Around(value = "logMethodPointcut()")
-    public Object aroundDurationTrackingAdvice(ProceedingJoinPoint proceedingJoinPoint) {
-        long durationMils = new Date().getTime();
+    public Object aroundExecutionMethodAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+        LocalDateTime beforeMethodStarted = LocalDateTime.now();
         logger.info("Выполняется метод {} в сервисе {}", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName());
         Object returnValue = null;
         try {
             returnValue = proceedingJoinPoint.proceed();
-        } catch (Throwable throwable) {
-            logger.error("При вызове метода {} из класса {} произошла ошибка {}", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName(), throwable.getMessage());
+        } catch (Throwable t) {
+            logger.error("При вызове метода {} из класса {} произошла ошибка {}", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName(), t.getMessage());
         }
+        LocalDateTime afterMethodExecution = LocalDateTime.now();
 
-        durationMils = new Date().getTime() - durationMils;
-        if (durationMils > 10_000L) {
+        Duration duration = Duration.between(beforeMethodStarted, afterMethodExecution);
+
+        if (duration.getSeconds() > 10) {
             logger.warn("При вызове метода {} из класса {} запрос в БД превысил 10 секунд!", proceedingJoinPoint.getSignature().getName(), proceedingJoinPoint.getThis().getClass().getSimpleName());
         }
 
