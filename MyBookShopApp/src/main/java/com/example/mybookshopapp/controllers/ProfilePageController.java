@@ -4,16 +4,17 @@ import com.example.mybookshopapp.data.payments.BalanceTransaction;
 import com.example.mybookshopapp.data.payments.PaymentPayload;
 import com.example.mybookshopapp.errors.InvalidPasswordException;
 import com.example.mybookshopapp.security.BookStoreUser;
-import com.example.mybookshopapp.security.BookStoreUserDetails;
 import com.example.mybookshopapp.security.BookStoreUserRegister;
 import com.example.mybookshopapp.services.BalanceTransactionService;
 import com.example.mybookshopapp.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.NoSuchAlgorithmException;
@@ -77,10 +78,9 @@ public class ProfilePageController {
     }
 
     @PostMapping(value = "/payment")
-    public RedirectView handleFillAccountBalance(@AuthenticationPrincipal BookStoreUserDetails user,
-                                                 @RequestBody PaymentPayload payload) throws NoSuchAlgorithmException {
-//        BookStoreUser bookStoreUser = userRegister.getCurrentUser();
-        Integer invId = balanceTransactionService.saveTransaction(payload, user);
+    public RedirectView handleFillAccountBalance(@RequestBody PaymentPayload payload) throws NoSuchAlgorithmException {
+        BookStoreUser bookStoreUser = userRegister.getCurrentUser();
+        Integer invId = balanceTransactionService.saveTransaction(payload, bookStoreUser);
         String paymentUrl = paymentService.getPaymentUrl(payload.getSum(), invId);
         return new RedirectView(paymentUrl);
     }
