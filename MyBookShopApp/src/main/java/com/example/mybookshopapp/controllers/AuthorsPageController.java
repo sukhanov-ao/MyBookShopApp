@@ -1,5 +1,6 @@
 package com.example.mybookshopapp.controllers;
 
+import com.example.mybookshopapp.annotations.ApiExecutionTimeLoggable;
 import com.example.mybookshopapp.data.BooksPageDTO;
 import com.example.mybookshopapp.data.book.Author;
 import com.example.mybookshopapp.data.book.AuthorSection;
@@ -45,11 +46,13 @@ public class AuthorsPageController {
         return new ArrayList<>();
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/authors")
     public String getAuthorsStartsWithLetter() {
         return "/authors/index";
     }
 
+    @ApiExecutionTimeLoggable
     @ApiOperation("method to get map of authors")
     @GetMapping("/api/authors")
     @ResponseBody
@@ -57,6 +60,7 @@ public class AuthorsPageController {
         return authorService.getAuthorsStartWithLetter();
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/authors/slug/{id:\\d+}")
     public String slugPage(@PathVariable Integer id, Model model) {
         Page<Book> bookPage = bookService.getBooksByAuthorId(id, 0, 20);
@@ -66,6 +70,7 @@ public class AuthorsPageController {
         return "/authors/slug";
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/books/author/{authorId:\\d+}")
     public String authorBooks(@PathVariable Integer authorId, Model model) {
         model.addAttribute("author", authorService.getAuthorById(authorId));
@@ -73,6 +78,7 @@ public class AuthorsPageController {
         return "/books/author";
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/books/author/page/{authorId:\\d+}")
     @ResponseBody
     public BooksPageDTO getNextPage(@RequestParam("offset") Integer offset,

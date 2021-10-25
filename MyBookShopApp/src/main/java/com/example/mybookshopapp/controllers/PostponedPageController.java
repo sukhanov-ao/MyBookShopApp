@@ -1,5 +1,6 @@
 package com.example.mybookshopapp.controllers;
 
+import com.example.mybookshopapp.annotations.BookStatusChangeable;
 import com.example.mybookshopapp.data.book.Book;
 import com.example.mybookshopapp.repositories.BookRepository;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,7 @@ public class PostponedPageController {
         return "postponed";
     }
 
+    @BookStatusChangeable
     @PostMapping("/changeBookStatus/postponed/remove/{slug}")
     public String handleRemoveBookFromPostponedRequest(@PathVariable("slug") String slug,
                                                   @CookieValue(name = "postponedContents", required = false) String postponedContents,
@@ -64,6 +66,7 @@ public class PostponedPageController {
         return "redirect:/books/postponed";
     }
 
+    @BookStatusChangeable
     @PostMapping("/changeBookStatus/postponed/{slug}")
     public String handleChangeBookStatus(@PathVariable("slug") String slug,
                                          @CookieValue(name = "postponedContents", required = false) String postponedContents,

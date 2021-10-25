@@ -1,8 +1,8 @@
 package com.example.mybookshopapp.services;
 
+import com.example.mybookshopapp.annotations.MethodExecutionTimeLoggable;
 import com.example.mybookshopapp.data.book.rating.BookRating;
 import com.example.mybookshopapp.repositories.RatingRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,12 @@ public class RatingService {
         this.ratingRepository = ratingRepository;
     }
 
+    @MethodExecutionTimeLoggable
     public void save(BookRating bookRating) {
         ratingRepository.save(bookRating);
     }
 
+    @MethodExecutionTimeLoggable
     public void updateRating(BookRating bookRating, Integer starValue) {
         switch (starValue) {
             case 1:

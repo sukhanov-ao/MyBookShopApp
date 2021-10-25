@@ -24,6 +24,9 @@
                 </g>
             </g>
         </svg>
+        <span class="CartBlock-amount" th:text="${bookInCartAmount}">0</span></a><a class="CartBlock-block"
+                                                                                         th:href="@{/books/cart}"
+                                                                                         href="/cart.html">
         <a sec:authorize="!isAuthenticated()" class="CartBlock-block" th:href="@{/signin}" id="login">
             <svg class="CartBlock-img" xmlns="http://www.w3.org/2000/svg" width="22" height="23" viewBox="0 0 22 23">
                 <g>
@@ -54,7 +57,6 @@
                 </g>
             </svg>
             <span class="CartBlock-text" sec:authentication="name">Дмитрий Петров</span><span class="CartBlock-budget">На счете 100 рублей</span></a>
-        <a th:href="@{/logout}">Выход</a>
     </a>
     </div>
 </div>
@@ -90,7 +92,7 @@
                 </g>
             </g>
         </svg>
-        <span class="CartBlock-amount">0</span></a><a class="CartBlock-block" th:href="@{/books/cart}"
+        <span class="CartBlock-amount" th:text="${bookInPostponedAmount}">0</span></a><a class="CartBlock-block" th:href="@{/books/cart}"
                                                       href="/cart.html">
         <svg class="CartBlock-img" xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23">
             <g>
@@ -100,7 +102,7 @@
                 </g>
             </g>
         </svg>
-        <span class="CartBlock-amount">0</span></a><a class="CartBlock-block CartBlock-block_text" th:href="@{/profile}"
+        <span class="CartBlock-amount" th:text="${bookInCartAmount}">0</span></a><a class="CartBlock-block CartBlock-block_text" th:href="@{/profile}"
                                                       href="/profile.html">
         <svg class="CartBlock-img" height="30" viewBox="0 0 511.989 511.989" width="30"
              xmlns="http://www.w3.org/2000/svg">

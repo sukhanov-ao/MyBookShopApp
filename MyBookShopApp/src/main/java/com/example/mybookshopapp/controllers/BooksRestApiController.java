@@ -1,5 +1,6 @@
 package com.example.mybookshopapp.controllers;
 
+import com.example.mybookshopapp.annotations.ApiExecutionTimeLoggable;
 import com.example.mybookshopapp.data.ApiResponse;
 import com.example.mybookshopapp.data.book.Book;
 import com.example.mybookshopapp.errors.BookStoreApiWrongParametersException;
@@ -27,12 +28,14 @@ public class BooksRestApiController {
         this.bookService = bookService;
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/books/by-author")
     @ApiOperation("operation to get book list of bookshop by passed author first name")
     public ResponseEntity<List<Book>> booksByAuthor(@RequestParam("author") String authorName) {
         return ResponseEntity.ok(bookService.getBooksByAuthor(authorName));
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/books/by-title")
     @ApiOperation("get books by book title")
     public ResponseEntity<ApiResponse<Book>> booksByTitle(@RequestParam("title") String title) throws BookStoreApiWrongParametersException {
@@ -46,18 +49,21 @@ public class BooksRestApiController {
         return ResponseEntity.ok(response);
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/books/by-price-range")
     @ApiOperation("get book price in range from min price to max price")
     public ResponseEntity<List<Book>> booksByPriceRange(@RequestParam("min") Integer min, @RequestParam("max") Integer max) {
         return ResponseEntity.ok(bookService.getBooksWithPriceBetween(min, max));
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/books/with-max-discount")
     @ApiOperation("get list of books with max discount")
     public ResponseEntity<List<Book>> booksWithMaxDiscount() {
         return ResponseEntity.ok(bookService.getBooksWithMaxDiscount());
     }
 
+    @ApiExecutionTimeLoggable
     @GetMapping("/books/bestsellers")
     @ApiOperation("get bestseller books (is_bestseller = 1)")
     public ResponseEntity<List<Book>> bestsellerBooks() {
