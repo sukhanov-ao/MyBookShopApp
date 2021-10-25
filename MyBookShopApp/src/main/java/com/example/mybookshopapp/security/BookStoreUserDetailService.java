@@ -1,7 +1,6 @@
 package com.example.mybookshopapp.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,17 +16,19 @@ public class BookStoreUserDetailService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        BookStoreUser bookStoreUser = null;
-        if (s.startsWith("+")) {
-            bookStoreUser = bookStoreUserRepository.findBookStoreUserByPhone(s);
-        } else {
-            bookStoreUser = bookStoreUserRepository.findBookStoreUserByEmail(s);
-        }
+    public CustomUserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        BookStoreUser bookStoreUser = bookStoreUserRepository.findBookStoreUserByEmail(s);
+
         if (bookStoreUser != null) {
             return new BookStoreUserDetails(bookStoreUser);
+        }
+
+        bookStoreUser = bookStoreUserRepository.findBookStoreUserByPhone(s);
+
+        if (bookStoreUser != null) {
+            return new PhoneNumberUserDetails(bookStoreUser);
         } else {
-            throw new UsernameNotFoundException("user not found!");
+            throw new UsernameNotFoundException("user not found");
         }
     }
 }

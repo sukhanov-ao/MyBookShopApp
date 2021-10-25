@@ -38,18 +38,20 @@
                 <div class="Tabs-wrap">
                     <div class="Tabs-block" id="basic">
                         <div class="Profile">
-                            <form class="form Profile-form" action="#" method="post">
+                            <form class="form Profile-form" action="#" method="post" th:action="${'profile/edit'}">
                                 <div class="row">
                                     <div class="row-block">
                                         <div class="form-group">
                                             <label class="form-label" for="name">Имя
                                             </label>
-                                            <input class="form-input" id="name" name="name" th:value="${currentUser.name}" type="text" value="Михаил"/>
+                                            <input class="form-input" id="name" name="name"
+                                                   th:value="${currentUser.name}" type="text" value="Михаил"/>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="mail">E-mail
                                             </label>
-                                            <input class="form-input" id="mail" name="mail" type="text" th:value="${currentUser.email}"
+                                            <input class="form-input" id="mail" name="mail" type="text"
+                                                   th:value="${currentUser.email}"
                                                    value="addr@sait.com" data-validate="require mail"/>
                                             <div class="Profile-btn Profile-btn_confirm">
                                                 <button class="btn btn_primary" type="button">Подтвердить
@@ -59,7 +61,8 @@
                                         <div class="form-group">
                                             <label class="form-label" for="phone">Телефон
                                             </label>
-                                            <input class="form-input" id="phone" name="phone" type="text" th:value="${currentUser.phone}"
+                                            <input class="form-input" id="phone" name="phone" type="text"
+                                                   th:value="${currentUser.phone}"
                                                    value="+70000000000" data-mask="+7 (999) 999-99-99"
                                                    data-validate="require"/>
                                             <div class="Profile-btn Profile-btn_confirm">
@@ -88,8 +91,12 @@
                                                 <button class="btn btn_primary" type="submit">Сохранить
                                                 </button>
                                             </div>
-                                            <div class="Profile-success">Профиль успешно сохранен
+                                            <div th:if="${successfulSave != null && successfulSave}"
+                                                 class="Profile-success">Профиль успешно сохранен
                                             </div>
+                                            <div th:if="${passwordError}"
+                                                 th:text="${passwordError.getLocalizedMessage()}"
+                                                 style="color: red"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -111,46 +118,26 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>15 мая 2017 10:03
+                                    <tr th:each="transaction : ${userTransactions}">
+                                        <td th:text="${#temporals.format(transaction.getTime(), 'dd-MM-yyyy HH:mm')}">15 мая 2017 10:03
                                         </td>
                                         <td><span class="Transactions_textSuccess">
-                            <strong>+500 р.
+                            <strong th:text="${transaction.getValue() + ' р.'}">+500 р.
                             </strong></span>
                                         </td>
-                                        <td>Пополнение счета
+                                        <td th:text="${transaction.getDescription()}">Пополнение счета
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>5 марта 2017 13:40
-                                        </td>
-                                        <td><span class="Transactions_textSuccess">
-                            <strong>-480 р.
-                            </strong></span>
-                                        </td>
-                                        <td>Покупка книги&#32;<a href="/books/slug.html">История Беларуси</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1 февраля 2017 04:10
-                                        </td>
-                                        <td><span class="Transactions_textSuccess">
-                            <strong>+10 000 р.
-                            </strong></span>
-                                        </td>
-                                        <td>Пополнение с помощью WebMoney
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1 января 2017 09:33
-                                        </td>
-                                        <td><span class="Transactions_textSuccess">
-                            <strong>+7 896 р.
-                            </strong></span>
-                                        </td>
-                                        <td>Пополнение с помощью Яндекс.Деньги
-                                        </td>
-                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td>5 марта 2017 13:40-->
+<!--                                        </td>-->
+<!--                                        <td><span class="Transactions_textSuccess">-->
+<!--                            <strong>-480 р.-->
+<!--                            </strong></span>-->
+<!--                                        </td>-->
+<!--                                        <td>Покупка книги&#32;<a href="/books/slug.html">История Беларуси</a>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
                                     </tbody>
                                 </table>
                             </div>
@@ -161,7 +148,7 @@
                         </div>
                     </div>
                     <div class="Tabs-block" id="topup">
-                        <form class="form Topup" action="#" method="post" data-sendHash="34534535">
+                        <form class="form Topup" action="#" th:action="@{/payment}" method="post">
                             <div class="Topup-wrap">
                                 <strong class="Topup-title">Введите сумму, на которую хотите пополнить свой счет:
                                 </strong>

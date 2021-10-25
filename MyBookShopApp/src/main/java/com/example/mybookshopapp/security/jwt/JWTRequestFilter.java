@@ -1,11 +1,12 @@
 package com.example.mybookshopapp.security.jwt;
 
 import com.example.mybookshopapp.security.BookStoreUserDetailService;
-import com.example.mybookshopapp.security.BookStoreUserDetails;
+import com.example.mybookshopapp.security.CustomUserDetails;
 import com.example.mybookshopapp.security.JwtAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -73,7 +74,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     }
 
     private void validateToken(HttpServletRequest httpServletRequest, String token, String username) {
-        BookStoreUserDetails userDetails = (BookStoreUserDetails) bookStoreUserDetailService.loadUserByUsername(username);
+        CustomUserDetails userDetails = bookStoreUserDetailService.loadUserByUsername(username);
         if (jwtUtil.validateToken(token, userDetails)) {
             authenticateToken(httpServletRequest, userDetails);
         } else {
@@ -81,7 +82,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         }
     }
 
-    private void authenticateToken(HttpServletRequest httpServletRequest, BookStoreUserDetails userDetails) {
+    private void authenticateToken(HttpServletRequest httpServletRequest, UserDetails userDetails) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

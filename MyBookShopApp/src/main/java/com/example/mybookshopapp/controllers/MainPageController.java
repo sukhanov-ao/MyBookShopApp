@@ -8,15 +8,12 @@ import com.example.mybookshopapp.errors.EmptySearchException;
 import com.example.mybookshopapp.services.BookService;
 import com.example.mybookshopapp.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -69,7 +66,7 @@ public class MainPageController {
         if(searchWordDTO!= null) {
             model.addAttribute("searchWordDTO", searchWordDTO);
             model.addAttribute("searchResults",
-                    bookService.getPageOfSearchResultBooks(searchWordDTO.getExample(), 0, 20).getContent());
+                    bookService.getPageOfSearchResultBooks(searchWordDTO.getExample(), 0, 20));
             return "/search/index";
         } else {
             throw new EmptySearchException("Поиск по null невозможен");
@@ -83,4 +80,29 @@ public class MainPageController {
                                           @PathVariable(value = "searchWord", required = false) SearchWordDTO searchWordDTO) {
         return new BooksPageDTO(bookService.getPageOfSearchResultBooks(searchWordDTO.getExample(), offset, limit).getContent());
     }
+
+
+//    @GetMapping(value = {"/search", "/search/{searchWord}"})
+//    public String getSearchResults(@PathVariable(value = "searchWord", required = false) SearchWordDTO searchWordDTO,
+//                                   Model model) throws EmptySearchException {
+//        if(searchWordDTO!= null) {
+//            model.addAttribute("searchWordDTO", searchWordDTO);
+//            model.addAttribute("searchResults",
+//                    bookService.getPageOfGoogleBooksApiSearchResult(searchWordDTO.getExample(), 0, 5));
+//            return "/search/index";
+//        } else {
+//            throw new EmptySearchException("Поиск по null невозможен");
+//        }
+//    }
+//
+//    @GetMapping("/search/page/{searchWord}")
+//    @ResponseBody
+//    public BooksPageDTO getNextSearchPage(@RequestParam("offset") Integer offset,
+//                                          @RequestParam("limit") Integer limit,
+//                                          @PathVariable(value = "searchWord", required = false) SearchWordDTO searchWordDTO,
+//                                          Model model) {
+//        return new BooksPageDTO(bookService.getPageOfGoogleBooksApiSearchResult(searchWordDTO.getExample(), offset, limit));
+//    }
+
+
 }

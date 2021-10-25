@@ -1,7 +1,6 @@
 package com.example.mybookshopapp.data.book;
 
 import com.example.mybookshopapp.data.book.file.BookFile;
-import com.example.mybookshopapp.data.book.file.BookFileType;
 import com.example.mybookshopapp.data.book.review.BookReview;
 import com.example.mybookshopapp.data.genre.Genre;
 import com.example.mybookshopapp.data.tag.Tag;
@@ -93,8 +92,7 @@ public class Book {
 
     @JsonProperty
     public Integer discountPrice() {
-        Integer discountPrice = priceOld - (int)Math.round((price * priceOld));
-        return discountPrice;
+        return priceOld - Math.toIntExact((int)Math.round((price * priceOld)));
     }
 
     @JsonGetter("authors")
