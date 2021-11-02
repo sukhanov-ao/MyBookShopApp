@@ -7,4 +7,6 @@ public interface BookStoreUserRepository extends JpaRepository<BookStoreUser, In
     BookStoreUser findBookStoreUserByEmail(String email);
 
     BookStoreUser findBookStoreUserByPhone(String phone);
+
+    BookStoreUser findBookStoreUserById(Integer id);
 }

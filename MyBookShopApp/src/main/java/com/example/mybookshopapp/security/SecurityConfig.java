@@ -3,7 +3,6 @@ package com.example.mybookshopapp.security;
 import com.example.mybookshopapp.security.jwt.CustomLogoutHandler;
 import com.example.mybookshopapp.security.jwt.JWTRequestFilter;
 import com.example.mybookshopapp.security.jwt.JwtBlackListService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

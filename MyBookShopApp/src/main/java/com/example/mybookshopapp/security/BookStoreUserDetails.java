@@ -1,6 +1,5 @@
 package com.example.mybookshopapp.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-public class BookStoreUserDetails implements UserDetails, OAuth2User {
+public class BookStoreUserDetails implements CustomUserDetails, OAuth2User {
 
     private final BookStoreUser bookStoreUser;
 
@@ -39,7 +38,7 @@ public class BookStoreUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getUsername() {
-        return bookStoreUser.getEmail();
+        return bookStoreUser.getName();
     }
 
     @Override
@@ -65,5 +64,10 @@ public class BookStoreUserDetails implements UserDetails, OAuth2User {
     @Override
     public String getName() {
         return bookStoreUser.getName();
+    }
+
+    @Override
+    public String getEmail() {
+        return bookStoreUser.getEmail();
     }
 }

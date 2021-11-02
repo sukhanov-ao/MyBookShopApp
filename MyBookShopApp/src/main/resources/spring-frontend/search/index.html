@@ -46,7 +46,7 @@
             </div>
             <div class="Section Section_close">
                 <header class="Section-header">
-                    <h2 class="Section-title Middle-searchHeader" th:text="${'Найдено книг: ' + searchResults.size()}">Найдено 40 книг
+                    <h2 class="Section-title Middle-searchHeader" th:text="${'Найдено книг: ' + searchResults.getTotalElements()}">Найдено 40 книг
                     </h2>
                 </header>
                 <div class="Cards Cards_refresh" th:object="${searchWordDTO}"
